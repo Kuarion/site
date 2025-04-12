@@ -1,4 +1,4 @@
-import com.kuarion.backend.roles;
+package com.kuarion.backend.roles;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -9,7 +9,7 @@ public enum Roles implements GrantedAuthority {
 
   private final String role;
 
-  UserRole(String role) {
+  Roles(String role) {
     this.role = role;
   }
 

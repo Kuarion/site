@@ -38,15 +38,18 @@ public class User implements UserDetails {
   private String lastName;
    
   @Setter @Column(nullable = true, unique = true)
+  private String username;
+  
+  @Setter @Column(nullable = true, unique = true)
   private String email;
   
   @Setter @Column(nullable = false, unique = false)
   private String password;
   
   @Setter @Enumerated(EnumType.STRING)
-  private Roles roles; // user role
+  private Roles role; // user role
   
-  // require methods from UserDetails interface
+  // required methods from UserDetails interface
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     
@@ -56,7 +59,7 @@ public class User implements UserDetails {
         new SimpleGrantedAuthority("ROLE_ADMIN"),
         new SimpleGrantedAuthority("ROLE_USER"),
         new SimpleGrantedAuthority("ROLE_ENTERPRISE")
-      )
+      );
     } else if (this.role == role.USER) {
       return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     } else {
