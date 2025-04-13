@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 
@@ -30,10 +30,12 @@ import com.kuarion.backend.roles.Roles;
 @RestController @RequestMapping(value = "/authentication")
 public class AuthenticationService {
   private UserService userService;
+  private PasswordEncoder passwordEncoder;
   
   // Dependencies Injection
-  public AuthenticationController(UserService userService) {
+  public AuthenticationController(UserService userService, PasswordEncoder, passwordEncoder) {
     this.userService = userService;
+    this.passwordEncoder = passwordEncoder;
   }
   
   @PostMapping(value = "{type}/register")
@@ -47,7 +49,9 @@ public class AuthenticationService {
         if (email || username) {
           throw new EmailOrUsernameAlreadyExists("Email or username already exists!");
         }
-        String encryptedPassword = new BCryptPasswordEncoder.encode(data.password());
+        
+        // it calls the bean `passwordEncoder`
+        String encryptedPassword = this.passwordEncoder.encode(data.password());
         this.userService.createUser(data.firstName(), data.lastName(), data.username(), data.email(), encryptedPassword, role.fromString());
         
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("Message", "User created successfully!"));
