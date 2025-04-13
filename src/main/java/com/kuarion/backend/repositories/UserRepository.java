@@ -1,4 +1,4 @@
-package com.kuarion.backend.repositories;
+/*package com.kuarion.backend.repositories;
 
 import java.util.Optional;
 
@@ -14,4 +14,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
   
   // find an user by email
   Optional<User> findByEmail(String email);
-}
+}*/
