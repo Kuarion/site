@@ -23,8 +23,8 @@ public class SecurityConfig {
   }
 
 	@Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-      return httpSecurity
+  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+     return httpSecurity
         .csrf(csrf -> csrf.disable())
           
         // authentication based in token: stateless security policy
@@ -40,12 +40,13 @@ public class SecurityConfig {
            .logoutSuccessUrl("/")
            .invalidateHttpSession(true)
            .deleteCookies("jwtToken")
-           .authenticated()
+           .permitAll()
          )
+        // the tokenFilter will intercept all protected routes before UsernamePasswordAuthenticationFilter
         // the tokenFilter will intercept all protected routes before UsernamePasswordAuthenticationFilter
         .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
-    }
+  }
     
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {

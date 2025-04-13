@@ -8,6 +8,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,9 +33,9 @@ public class TokenFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
     // get current URI
-    String uri = res.getRequestURI();
+    String uri = req.getRequestURI();
     // it calls "recoverToken" method to get token
-    var token = this.recoverToken(res);
+    var token = this.recoverToken(req);
     // condition to verify if token were found
     if (token != null) {
       // recover user from tokenService "validateToken" method
@@ -51,15 +52,15 @@ public class TokenFilter extends OncePerRequestFilter {
       SecurityContextHolder.setContext(securityContext);
       // if the URI starts with "/dashboard" (o.g. /dashboard/account) or it's a file, the requisition continues
       if (uri.startsWith("/dashboard") || uri.matches(".*\\.(css|js|png|jpg|svg|ico)$")) {
-        filterChain.doFilter(res, req);
+        filterChain.doFilter(req, res);
         return;
       }
       // for all other cases, the user will be redirected to "/dashboard"
-      filterChain.sendRedirect("/dashboard");
+      res.sendRedirect("/dashboard");
       return;
     }
     // if token is null, the requisition continues
-    filterChain.doFilter(res, req);
+    filterChain.doFilter(req, res);
     return;
   }
   

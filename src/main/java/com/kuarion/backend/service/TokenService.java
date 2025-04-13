@@ -21,7 +21,7 @@ public class TokenService {
   @Value("${token.secret}")
   private String tokenSecret;
   
-  public String createToken(Object user) {
+  public String createToken(User user) {
     try {
       
       // the environment variable is hashed using HMAC 256 bits

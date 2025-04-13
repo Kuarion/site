@@ -9,6 +9,7 @@ import jakarta.servlet.http.Cookie;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,9 +29,10 @@ import com.kuarion.backend.entities.User;
 import com.kuarion.backend.errors.EmailOrUsernameAlreadyExists;
 import com.kuarion.backend.roles.Roles;
 import com.kuarion.backend.service.TokenService;
+import com.kuarion.backend.service.UserService;
 
 @RestController @RequestMapping(value = "/authentication")
-public class AuthenticationService {
+public class AuthenticationController {
   private UserService userService;
   private PasswordEncoder passwordEncoder;
   private AuthenticationManager authenticationManager;
@@ -58,7 +60,7 @@ public class AuthenticationService {
         // it calls the bean `passwordEncoder`
         String encryptedPassword = this.passwordEncoder.encode(data.password());
         // create a new user
-        this.userService.createUser(data.firstName(), data.lastName(), data.username(), data.email(), encryptedPassword, role.fromString());
+        this.userService.createUser(data.firstName(), data.lastName(), data.username(), data.email(), encryptedPassword, role.fromString("ROLE_USER"));
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("Message", "User created successfully!"));
       // condition to verify if it's an enterprise
       } else {
