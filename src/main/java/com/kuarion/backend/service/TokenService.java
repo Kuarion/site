@@ -45,6 +45,7 @@ public class TokenService {
              .withIssuer("jwtToken")
              .build()
              .verify(token)
+             // return authenticated user
              .getSubject();
     } catch (JWTVerificationException e) {
       return "";
