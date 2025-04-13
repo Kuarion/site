@@ -11,10 +11,16 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+  private TokenFilter tokenFilter;
+  
+  private SecurityConfig(TokenFilter tokenFilter) {
+    this.tokenFilter = tokenFilter;
+  }
 
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -29,14 +35,15 @@ public class SecurityConfig {
           .requestMatchers(HttpMethod.GET, "/dashboard").authenticated()
           .anyRequest().denyAll()
         )
-//         .logout(logout -> logout
-//           .logoutUrl("/dashboard/logout")
-//           .logoutSuccessUrl("/")
-//           .invalidateHttpSession(true)
-//           .deleteCookies("token")
-//           .authenticated()
-//          )
-        // .addFilterBefore()
+        .logout(logout -> logout
+           .logoutUrl("/dashboard/logout")
+           .logoutSuccessUrl("/")
+           .invalidateHttpSession(true)
+           .deleteCookies("jwtToken")
+           .authenticated()
+         )
+        // the tokenFilter will intercept all protected routes before UsernamePasswordAuthenticationFilter
+        .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
     }
     
