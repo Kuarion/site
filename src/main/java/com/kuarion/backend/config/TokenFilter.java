@@ -36,7 +36,7 @@ public class TokenFilter extends OncePerRequestFilter {
     String uri = req.getRequestURI();
     // it calls "recoverToken" method to get token
     var token = this.recoverToken(req);
-    // condition to verify if token were found
+    // condition to verify if token was found
     if (token != null) {
       // recover user from tokenService "validateToken" method
       var tokenSubject = this.tokenService.validateToken(token);

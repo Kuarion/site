@@ -3,113 +3,87 @@ package com.kuarion.backend.entities;
 import java.util.Collection;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
+
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.kuarion.backend.roles.Roles;
 
-import jakarta.persistence.*;
-import lombok.*;
-/*
-@Entity 
-@Table(name = "users")
-@Getter @Setter
-@NoArgsConstructor 
-@AllArgsConstructor 
-@EqualsAndHashCode(of = "id")
+@Entity @Table(name = "users")
+@Getter @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode
 public class User implements UserDetails {
+  
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id; // primary key
+  
+  @Setter @Column(nullable = false, unique = false)
+  private String firstName;
+  
+  @Setter @Column(nullable = true, unique = false)
+  private String lastName;
    
-    @Id 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Setter @Column(nullable = true, unique = true)
+  private String username;
+  
+  @Setter @Column(nullable = true, unique = true)
+  private String email;
+  
+  @Setter @Column(nullable = false, unique = false)
+  private String password;
+  
+  @Setter @Enumerated(EnumType.STRING)
+  private Roles role; // user role
+  
+  // required methods from UserDetails interface
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
     
-    @Column(nullable = false)
-    private String firstName;
-    
-    @Column(nullable = true)
-    private String lastName;
-     
-    @Column(nullable = true, unique = true)
-    private String username;
-    
-    @Column(nullable = true, unique = true)
-    private String email;
-    
-    @Column(nullable = false)
-    private String password;
-    
-    @Enumerated(EnumType.STRING)
-    private Roles role;
-    
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private UserStatistics userStatistics;
-    
-    // Métodos do UserDetails...
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == Roles.ADMIN) {
-            return List.of(
-                new SimpleGrantedAuthority("ROLE_ADMIN"),
-                 new SimpleGrantedAuthority("ROLE_USER"),
-                new SimpleGrantedAuthority("ROLE_ENTERPRISE")
-            );
-        } else if (this.role == Roles.USER) {
-            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-        } else {
-            return List.of(new SimpleGrantedAuthority("ROLE_ENTERPRISE"));
-        }
+    // if user is ADMIN, he has all roles
+    if (this.role == role.ADMIN) {
+      return List.of(
+        new SimpleGrantedAuthority("ROLE_ADMIN"),
+        new SimpleGrantedAuthority("ROLE_USER"),
+        new SimpleGrantedAuthority("ROLE_ENTERPRISE")
+      );
+    } else if (this.role == role.USER) {
+      return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    } else {
+      return List.of(new SimpleGrantedAuthority("ROLE_ENTERPRISE"));
     }
+  }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-	@Override
-	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public UserStatistics getUserStatistics() {
-		return userStatistics;
-	}
-
-	public void setUserStatistics(UserStatistics userStatistics) {
-		this.userStatistics = userStatistics;
-	}
-	
-	
-	
-	
-}*/
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
+}
