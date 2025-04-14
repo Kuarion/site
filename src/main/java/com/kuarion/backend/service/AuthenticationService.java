@@ -1,12 +1,14 @@
-/*package com.kuarion.backend.service;
+package com.kuarion.backend.service;
 
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
+import com.kuarion.backend.entities.User;
 import com.kuarion.backend.repositories.UserRepository;
 
 @Service
@@ -40,4 +42,3 @@ public class AuthenticationService implements UserDetailsService {
     return userDetails.get();
   }
 }
-*/
