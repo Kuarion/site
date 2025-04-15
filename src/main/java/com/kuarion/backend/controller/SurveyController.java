@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kuarion.backend.entities.Question;
-import com.kuarion.backend.entities.SurveyAnswers;
 import com.kuarion.backend.service.SurveyService;
 
 @RestController
@@ -46,7 +45,12 @@ public class SurveyController {
 	        Map<Question, Map<String, Long>> statistics = surveyService.getQuestionStatistics();
 	        return ResponseEntity.ok(statistics);
 	    }
-
+	
+	@GetMapping("/statistics/{questionId}")
+	public ResponseEntity<Map<String, Long>> getQuestionStatistics(@PathVariable Long questionId) {
+	    Map<String, Long> statistics = surveyService.getSingleQuestionStatistics(questionId);
+	    return ResponseEntity.ok(statistics);
+	}
 	    
 	    @GetMapping("/questions")
 	    public List<Question> getQuestions() {

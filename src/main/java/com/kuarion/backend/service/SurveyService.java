@@ -79,6 +79,22 @@ public class SurveyService {
         return statistics;
     }
     
+    
+    public Map<String, Long> getSingleQuestionStatistics(Long questionId) {
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new RuntimeException("Questão não encontrada, tente com outro ID, por favor !"));
+        
+        List<Answer> answers = answerRepository.findByQuestion(question);
+        
+        Map<String, Long> statistics = answers.stream()
+                .collect(Collectors.groupingBy(
+                    Answer::getAnswer, 
+                    Collectors.counting()
+                ));
+        
+        return statistics;
+    }
+    
     public List<Question> getAllQuestions() {
         return questionRepository.findAll();
     }
