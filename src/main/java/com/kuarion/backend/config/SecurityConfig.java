@@ -24,7 +24,7 @@ public class SecurityConfig {
     this.tokenFilter = tokenFilter;
   }
 
-	@Bean
+  @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
      return httpSecurity
         .csrf(csrf -> csrf.disable())
@@ -32,10 +32,14 @@ public class SecurityConfig {
         // authentication based in token: stateless security policy
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
-          .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat/message", "/api/chat/history").permitAll()
-          .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat/message").permitAll()
+          .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat/message","/status/**" ,"/statistics" , "/api/chat/history").permitAll()
+          .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat/message", "/submit/**").permitAll()
           .requestMatchers(HttpMethod.DELETE, "/api/chat/history/delete").permitAll()
+          
           .requestMatchers(HttpMethod.GET, "/dashboard").authenticated()
+          
+          .requestMatchers(HttpMethod.GET, "/statistics").permitAll()
+          
           .anyRequest().denyAll()
         )
         .logout(logout -> logout
@@ -45,8 +49,6 @@ public class SecurityConfig {
            .deleteCookies("jwtToken")
            .permitAll()
          )
-        // the tokenFilter will intercept all protected routes before UsernamePasswordAuthenticationFilter
-        // the tokenFilter will intercept all protected routes before UsernamePasswordAuthenticationFilter
         .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
   }
