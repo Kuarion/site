@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.kuarion.backend.entities.Answer;
 import com.kuarion.backend.entities.Question;
@@ -17,6 +18,7 @@ import com.kuarion.backend.repositories.QuestionRepository;
 import com.kuarion.backend.repositories.SurveyAnswersRepository;
 import com.kuarion.backend.repositories.UserRepository;
 
+@Service
 public class SurveyService {
 	
 	@Autowired
