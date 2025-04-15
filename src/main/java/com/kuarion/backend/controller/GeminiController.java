@@ -26,19 +26,19 @@ public class GeminiController {
 		}
 		
 		
-	  @PostMapping("/api/chat")
+	  @PostMapping("/api/chat/message")
 	    public ResponseEntity<ChatResponse> sendMessage(@RequestBody ChatRequest request) {
 	        ChatResponse response = chatService.processUserMessage(request);
 	        return ResponseEntity.ok(response);
 	    }
 
-	    @GetMapping("/history")
+	    @GetMapping("/api/chat/history")
 	    public ResponseEntity<ChatHistoryResponse> getChatHistory() {
 	        ChatHistoryResponse history = chatService.getChatHistory();
 	        return ResponseEntity.ok(history);
 	    }
 
-	    @DeleteMapping("/history")
+	    @DeleteMapping("/api/chat/history")
 	    public ResponseEntity<Void> clearChatHistory() {
 	        chatService.clearChatHistory();
 	        return ResponseEntity.noContent().build();
