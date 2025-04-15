@@ -34,13 +34,13 @@ public class User implements UserDetails {
   @Setter @Column(nullable = false, unique = false)
   private String firstName;
   
-  @Setter @Column(nullable = true, unique = false)
+  @Setter @Column(nullable = false, unique = false)
   private String lastName;
    
-  @Setter @Column(nullable = true, unique = true)
+  @Setter @Column(nullable = false, unique = true)
   private String username;
   
-  @Setter @Column(nullable = true, unique = true)
+  @Setter @Column(nullable = false, unique = true)
   private String email;
   
   @Setter @Column(nullable = false, unique = false)
@@ -62,8 +62,6 @@ public class User implements UserDetails {
       );
     } else if (this.role == role.USER) {
       return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-    } else {
-      return List.of(new SimpleGrantedAuthority("ROLE_ENTERPRISE"));
     }
   }
 
