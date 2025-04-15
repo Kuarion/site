@@ -32,7 +32,7 @@ public class SecurityConfig {
         // authentication based in token: stateless security policy
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
-          .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat/message","/status/**" ,"/statistics" , "/api/chat/history").permitAll()
+          .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat/message","/status/**" ,"/statistics" , "/api/chat/history", "/questions").permitAll()
           .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat/message", "/submit/**").permitAll()
           .requestMatchers(HttpMethod.DELETE, "/api/chat/history/delete").permitAll()
           
