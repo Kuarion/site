@@ -35,10 +35,10 @@ public class GeminiService {
             .build();
     }
 
-    public ChatResponse askGemini(ChatRequest request) { 
+    public String getGeminiResponse(String userMessage) {
         try {
-            String systemPrompt = "Você é um assistente especializado em energia solar. Siga as regras:  Regras: responda de forma técnica mas acessível, com foco em São Paulo.\n\n";
-
+            String systemPrompt = "Você é um assistente especializado em energia solar...";
+            
             String requestBody = String.format("""
                 {
                     "contents": [{
@@ -53,10 +53,10 @@ public class GeminiService {
                     }
                 }
                 """, 
-                request.message().replace("\"", "\\\""),
+                userMessage.replace("\"", "\\\""),
                 systemPrompt.replace("\"", "\\\"")
             );
-             
+            
             GeminiResponse response = restClient.post()
                 .uri("/v1beta/models/{model}:generateContent?key={key}", 
                     geminiApiModel, geminiApiKey)
@@ -64,23 +64,15 @@ public class GeminiService {
                 .retrieve()
                 .body(GeminiResponse.class);
             
-            if (response != null && 
-                !response.candidates().isEmpty() && 
-                !response.candidates().get(0).content().parts().isEmpty()) {
-                String textResponse = response.candidates().get(0).content().parts().get(0).text();
-                return new ChatResponse(textResponse);
+            if (response != null && !response.candidates().isEmpty()) {
+                return response.candidates().get(0).content().parts().get(0).text();
             }
+            return "Não foi possível obter uma resposta do Gemini.";
             
-            return new ChatResponse("Não foi possível obter uma resposta do Gemini.");
-            
-        } catch (HttpClientErrorException e) {
-            log.error("Erro na chamada à API do Gemini: {}", e.getResponseBodyAsString());
-            return new ChatResponse("Erro ao comunicar com o Gemini: " + e.getMessage());
         } catch (Exception e) {
-            log.error("Erro inesperado", e);
-            return new ChatResponse("Erro interno no servidor");
+            log.error("Erro ao chamar API do Gemini", e);
+            return "Desculpe, estou com problemas técnicos. Tente novamente mais tarde.";
         }
-    }
-    
+    }    
 
 }

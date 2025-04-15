@@ -1,5 +1,7 @@
 package com.kuarion.backend.model;
 
-public record ChatResponse(String response) {
+import java.time.LocalDateTime;
+
+public record ChatResponse(String response, LocalDateTime timestamp) {
 
 }
