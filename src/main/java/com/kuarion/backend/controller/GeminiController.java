@@ -2,6 +2,8 @@ package com.kuarion.backend.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -21,7 +23,9 @@ public class GeminiController {
     
     private final ChatService chatService;
     private final SimpMessagingTemplate messagingTemplate;
+    private static final Logger logger = LoggerFactory.getLogger(GeminiController.class);
     
+   
     @Autowired
     public GeminiController(ChatService chatService, SimpMessagingTemplate messagingTemplate) {
         this.chatService = chatService;
@@ -30,9 +34,10 @@ public class GeminiController {
     
     @PostMapping("/api/chat/message")
     public ResponseEntity<ChatResponse> sendMessage(@RequestBody ChatRequest request) {
-        ChatResponse response = chatService.processUserMessage(request);
         
-        // Envia a atualização do histórico para todos os clientes conectados
+    	   logger.info("Nova mensagem recebida: {}", request.message());
+    	ChatResponse response = chatService.processUserMessage(request);
+        logger.info("Enviando atualização para Websocket");
         messagingTemplate.convertAndSend("/topic/chat-updates", chatService.getChatHistory());
         
         return ResponseEntity.ok(response);
@@ -48,7 +53,6 @@ public class GeminiController {
     public ResponseEntity<Void> clearChatHistory() {
         chatService.clearChatHistory();
         
-        // Notifica os clientes que o histórico foi limpo
         messagingTemplate.convertAndSend("/topic/chat-updates", new ChatHistoryResponse(List.of()));
         
         return ResponseEntity.noContent().build();
