@@ -6,12 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
-import com.kuarion.backend.model.ChatRequest;
 import com.kuarion.backend.model.GeminiResponse;
-import com.kuarion.backend.model.ChatResponse;
 
 @Service
 public class GeminiService {
@@ -28,16 +25,22 @@ public class GeminiService {
      
     private final RestClient restClient;
     
+
+
     public GeminiService(RestClient.Builder builder) {
         this.restClient = builder
             .baseUrl("https://generativelanguage.googleapis.com")
             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+       
             .build();
+        
+        
+
     }
 
-    public String getGeminiResponse(String userMessage) {
+    public String getGeminiResponse(String userMessage, String systemPrompt) {
         try {
-            String systemPrompt = "Você é um assistente especializado em energia solar...";
+          
             
             String requestBody = String.format("""
                 {

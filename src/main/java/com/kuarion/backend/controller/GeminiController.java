@@ -1,18 +1,14 @@
 package com.kuarion.backend.controller;
 
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kuarion.backend.model.ChatExchange;
 import com.kuarion.backend.model.ChatHistoryResponse;
 import com.kuarion.backend.model.ChatRequest;
 import com.kuarion.backend.model.ChatResponse;
@@ -22,23 +18,31 @@ import com.kuarion.backend.service.ChatService;
 public class GeminiController {
     
     private final ChatService chatService;
-    private final SimpMessagingTemplate messagingTemplate;
-    private static final Logger logger = LoggerFactory.getLogger(GeminiController.class);
-    
+    private StringBuilder sb = new StringBuilder();
    
     @Autowired
-    public GeminiController(ChatService chatService, SimpMessagingTemplate messagingTemplate) {
+    public GeminiController(ChatService chatService) {
         this.chatService = chatService;
-        this.messagingTemplate = messagingTemplate;
     }
     
     @PostMapping("/api/chat/message")
     public ResponseEntity<ChatResponse> sendMessage(@RequestBody ChatRequest request) {
-        
-    	   logger.info("Nova mensagem recebida: {}", request.message());
-    	ChatResponse response = chatService.processUserMessage(request);
-        logger.info("Enviando atualização para Websocket");
-        messagingTemplate.convertAndSend("/topic/chat-updates", chatService.getChatHistory());
+        String systemPrompt = "";
+    	ChatHistoryResponse chatResponse = chatService.getChatHistory();
+    	if(chatResponse != null && chatResponse.exchanges().size() <= 10) {
+    		for(ChatExchange ce : chatResponse.exchanges()) {
+    		systemPrompt =
+    			sb.append("Essa NÃO é a primeira vez que o usuário te envia uma mensagem. "
+    					+ "Você deve levar as mensagens anteriores em consideração as mensagens anteriores que ele já tenha mandado"
+    					+ " a mensagem anterior do usuário foi" + ce.userMessage())
+    			.append("e a sua resposta foi" + ce.botResponse())
+    			.toString();
+    		}
+        }else {
+        	systemPrompt =
+        			sb.append("essa é a primeira mensagem que o usuário te envia uma mensagem !").toString();
+        }
+    	ChatResponse response = chatService.processUserMessage(request, systemPrompt);
         
         return ResponseEntity.ok(response);
     }
@@ -53,8 +57,9 @@ public class GeminiController {
     public ResponseEntity<Void> clearChatHistory() {
         chatService.clearChatHistory();
         
-        messagingTemplate.convertAndSend("/topic/chat-updates", new ChatHistoryResponse(List.of()));
         
         return ResponseEntity.noContent().build();
     }    
+    
+    
 }

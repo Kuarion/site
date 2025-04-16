@@ -22,9 +22,9 @@ public class ChatService {
 		this.geminiService = geminiService;
 	}
 	
-	public ChatResponse processUserMessage(ChatRequest request) {
+	public ChatResponse processUserMessage(ChatRequest request, String systemPrompt) {
 		  // using geminiService to process and get it's answer
-        String botResponse = geminiService.getGeminiResponse(request.message());
+        String botResponse = geminiService.getGeminiResponse(request.message(), systemPrompt);
         
         // Registering the exchange between request - response
         ChatExchange exchange = new ChatExchange(
