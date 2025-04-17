@@ -1,94 +1,65 @@
 package com.kuarion.backend.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClient;
 
+import com.kuarion.backend.model.ChatExchange;
+import com.kuarion.backend.model.ChatHistoryResponse;
 import com.kuarion.backend.model.ChatRequest;
-import com.kuarion.backend.model.GeminiResponse;
+import com.kuarion.backend.model.ChatResponse;
+import com.kuarion.backend.service.ChatService;
 
 @RestController
 public class GeminiController {
-
-	 private static final Logger log = LoggerFactory.getLogger(GeminiController.class);
-	
-	public record ChatResponse(String response) {} 
-	 
-	@Value("${spring.ai.openai.api-key}")
-	private String geminiApiKey;
-	
-	@Value("${gemini.api.model}")
-	private String geminiApiModel;
-	
-	@Value("${gemini.api.base-url}")
-	private String geminiApiUrl;
-	 
-	
-	private final RestClient restClient;
-	
-    public GeminiController(RestClient.Builder builder) {
-    	this.restClient = builder
-    			.baseUrl("https://generativelanguage.googleapis.com")
-    			.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-    			.build();
-    }
-
     
-    @PostMapping("/api/chat")
-    public ChatResponse askGemini(@RequestBody ChatRequest request) {
-    	 try {
-    		 String systemPrompt = "Você é um assistente especializado em energia solar. Siga as regras:  Regras: responda de forma técnica mas acessível, com foco em São Paulo.\\n\\n\"";
-
-    		 String requestBody = String.format("""
-    		     {
-    		         "contents": [{
-    		             "parts": [{
-    		                 "text": "%s"
-    		             }]
-    		         }],
-    		         "system_instruction": {
-    		             "parts": [{
-    		                 "text": "%s"
-    		             }]
-    		         }
-    		     }
-    		     """, 
-    		     request.message().replace("\"", "\\\""),
-    		     systemPrompt.replace("\"", "\\\"")
-    		 );
-    		 
-    	        // URI atualizada para a versão mais recente da API
-    	        GeminiResponse response = restClient.post()
-    	                .uri("/v1beta/models/{model}:generateContent?key={key}", 
-    	                        geminiApiModel, geminiApiKey)
-    	                .body(requestBody)
-    	                .retrieve()
-    	                .body(GeminiResponse.class);
-    	        
-	            
-	            if (response != null && 
-	                !response.candidates().isEmpty() && 
-	                !response.candidates().get(0).content().parts().isEmpty()) {
-	                String textResponse = response.candidates().get(0).content().parts().get(0).text();
-	                return new ChatResponse(textResponse);
-	            }
-	            
-	            return new ChatResponse("Não foi possível obter uma resposta do Gemini.");
-	            
-	        } catch (HttpClientErrorException e) {
-	            log.error("Erro na chamada à API do Gemini: {}", e.getResponseBodyAsString());
-	            return new ChatResponse("Erro ao comunicar com o Gemini: " + e.getMessage());
-	        } catch (Exception e) {
-	            log.error("Erro inesperado", e);
-	            return new ChatResponse("Erro interno no servidor");
-	        }
+    private final ChatService chatService;
+    private StringBuilder sb = new StringBuilder();
+   
+    @Autowired
+    public GeminiController(ChatService chatService) {
+        this.chatService = chatService;
     }
+    
+    @PostMapping("/api/chat/message")
+    public ResponseEntity<ChatResponse> sendMessage(@RequestBody ChatRequest request) {
+        String systemPrompt = "";
+    	ChatHistoryResponse chatResponse = chatService.getChatHistory();
+    	if(chatResponse != null && chatResponse.exchanges().size() <= 10) {
+    		for(ChatExchange ce : chatResponse.exchanges()) {
+    		systemPrompt =
+    			sb.append("Essa NÃO é a primeira vez que o usuário te envia uma mensagem. "
+    					+ "Você deve levar as mensagens anteriores em consideração as mensagens anteriores que ele já tenha mandado"
+    					+ " a mensagem anterior do usuário foi" + ce.userMessage())
+    			.append("e a sua resposta foi" + ce.botResponse())
+    			.toString();
+    		}
+        }else {
+        	systemPrompt =
+        			sb.append("essa é a primeira mensagem que o usuário te envia uma mensagem !").toString();
+        }
+    	ChatResponse response = chatService.processUserMessage(request, systemPrompt);
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/api/chat/history")
+    public ResponseEntity<ChatHistoryResponse> getChatHistory() {
+        ChatHistoryResponse history = chatService.getChatHistory();
+        return ResponseEntity.ok(history);
+    } 
+
+    @DeleteMapping("/api/chat/history")
+    public ResponseEntity<Void> clearChatHistory() {
+        chatService.clearChatHistory();
+        
+        
+        return ResponseEntity.noContent().build();
+    }    
+    
+    
 }

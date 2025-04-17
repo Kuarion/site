@@ -28,7 +28,7 @@ public class UserService {
     user.setRole(role);
     userRepository.save(user);
   }
-  
+   
   public boolean emailExists(String email) {
     Optional<User> user = this.userRepository.findByEmail(email);
     if (!user.isEmpty()) {
