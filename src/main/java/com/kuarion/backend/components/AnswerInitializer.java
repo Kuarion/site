@@ -27,8 +27,10 @@ public class AnswerInitializer implements CommandLineRunner{
 	@Override
 	public void run(String... args) {
         List<Question> questions = questionRepository.findAll();
+        
+        
         for(Question question : questions) {
-        	if(question.getType() == QuestionType.MULTIPLE_CHOICE) {
+        	if(question.getType() == QuestionType.MULTIPLE_CHOICE && hasDefaultAnswers(questions) != true) {
         		List<Answer> answers = Arrays.asList(
         				createDefaultAnswer(question, "OPÇÃO 1"),
         				createDefaultAnswer(question, "OPÇÃO 2"),
@@ -38,10 +40,12 @@ public class AnswerInitializer implements CommandLineRunner{
         		answerRepository.saveAll(answers);
         	}
         }
-	
+       
 	}
 	
-	
+	private boolean hasDefaultAnswers(List<Question> questions) {
+        return answerRepository.existsByQuestionInAndResponseIsNull(questions);
+    }
 	 private Answer createDefaultAnswer(Question question, String text) {
 	        Answer answer = new Answer();
 	        answer.setQuestion(question);

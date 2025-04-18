@@ -9,4 +9,6 @@ import com.kuarion.backend.entities.Question;
 
 public interface AnswerRepository extends JpaRepository<Answer, Long>{
     List<Answer> findByQuestion(Question question);
+    boolean existsByQuestionAndAnswerAndResponseIsNull(Question question, String answer);
+ boolean existsByQuestionInAndResponseIsNull(List<Question> questions);
 }
