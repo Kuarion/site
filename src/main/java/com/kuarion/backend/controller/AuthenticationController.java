@@ -3,6 +3,8 @@ package com.kuarion.backend.controller;
 import java.util.Map;
 import java.util.Optional;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseCookie;
 import jakarta.servlet.http.Cookie;
@@ -24,49 +26,71 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 
 import com.kuarion.backend.dtos.LoginDTO;
+import com.kuarion.backend.dtos.EnterpriseRegisterDTO;
 import com.kuarion.backend.dtos.RegisterDTO;
+import com.kuarion.backend.entities.Enterprise;
 import com.kuarion.backend.entities.User;
 import com.kuarion.backend.errors.EmailOrUsernameAlreadyExists;
+import com.kuarion.backend.errors.EnterpriseDataAlreadyExists;
 import com.kuarion.backend.roles.Roles;
 import com.kuarion.backend.service.TokenService;
 import com.kuarion.backend.service.UserService;
+import com.kuarion.backend.service.EnterpriseService;
 
 @RestController @RequestMapping(value = "/authentication")
 public class AuthenticationController {
   private UserService userService;
+  private EnterpriseService enterpriseService;
   private PasswordEncoder passwordEncoder;
   private AuthenticationManager authenticationManager;
   private TokenService tokenService;
   
   // Dependencies Injection
-  public AuthenticationController(UserService userService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, TokenService tokenService) {
+  public AuthenticationController(UserService userService, EnterpriseService enterpriseService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, TokenService tokenService) {
     this.userService = userService;
+    this.enterpriseService = enterpriseService;
     this.passwordEncoder = passwordEncoder;
     this.authenticationManager = authenticationManager;
     this.tokenService = tokenService;
   }
   
-  @PostMapping(value = "/{type}/register")
-  public ResponseEntity signup(@PathVariable String type, @RequestBody RegisterDTO data, Roles role) {
+  @PostMapping(value = "/pf/register")
+  public ResponseEntity signup(@Valid @RequestBody RegisterDTO data, Roles role) {
     try {
-      // condition to verify if it's a common user
-      if (type.equalsIgnoreCase("pf")) {
-        var email = this.userService.emailExists(data.email());
-        var username = this.userService.usernameExists(data.username());
-        // condition to verify if email or username already exists
-        if (email || username) {
-          throw new EmailOrUsernameAlreadyExists("Email or username already exists!");
-        }
-        // it calls the bean `passwordEncoder`
-        String encryptedPassword = this.passwordEncoder.encode(data.password());
-        // create a new user
-        this.userService.createUser(data.firstName(), data.lastName(), data.username(), data.email(), encryptedPassword, role.fromString("ROLE_USER"));
-        return ResponseEntity.status(HttpStatus.OK).body(Map.of("Message", "User created successfully!"));
-      // condition to verify if it's an enterprise
-      } else {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "URI not found!"));
+      var email = this.userService.emailExists(data.email());
+      var username = this.userService.usernameExists(data.username());
+      // condition to verify if email or username already exists
+      if (email || username) {
+        throw new EmailOrUsernameAlreadyExists("Email or username already exists!");
       }
+      // it calls the bean `passwordEncoder`
+      String encryptedPassword = this.passwordEncoder.encode(data.password());
+      // create a new user
+      this.userService.createUser(data.firstName(), data.lastName(), data.username(), data.email(), encryptedPassword, role.fromString("ROLE_USER"));
+      return ResponseEntity.status(HttpStatus.OK).body(Map.of("Message", "User created successfully!"));
     } catch (EmailOrUsernameAlreadyExists e) {
+      return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", e.getMessage()));
+    }
+  }
+  
+  @PostMapping(value = "/pj/register")
+  public ResponseEntity signup(@Valid @RequestBody EnterpriseRegisterDTO data, Roles role) {
+    try {
+      var email = this.enterpriseService.emailExists(data.email());
+      var username = this.enterpriseService.usernameExists(data.username());
+      var name = this.enterpriseService.nameExists(data.name());
+      var cnpj = this.enterpriseService.cnpjExists(data.cnpj());
+      
+      // condition to verify if enterprise data already exists
+      if (email || username || name || cnpj) {
+        throw new EnterpriseDataAlreadyExists("The given enterprise data already exists");
+      }
+      // it calls the bean `passwordEncoder`
+      String encryptedPassword = this.passwordEncoder.encode(data.password());
+      // create a new user
+      this.enterpriseService.createUser(data.name(), data.username(), data.email(), data.cnpj(), encryptedPassword, data.ownerName());
+      return ResponseEntity.status(HttpStatus.OK).body(Map.of("Message", "Enterprise created successfully!"));
+    } catch (EnterpriseDataAlreadyExists e) {
       return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", e.getMessage()));
     }
   }
@@ -89,6 +113,16 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("token", token));
         
         // important: the AuthenticationManager will not authenticate user itself. It will be a trigger to create cookie and token that will verified by TokenFilter
+      } else if (type.equalsIgnoreCase("pj")) {
+        
+        var authenticationToken = new UsernamePasswordAuthenticationToken(data.username(), data.password());
+        var auth = this.authenticationManager.authenticate(authenticationToken);
+        var token = this.tokenService.createEnterpriseToken((Enterprise) auth.getPrincipal());
+        Cookie cookie = this.generateCookie(token);
+        
+        res.addCookie(cookie);
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("token", token));
+        
       } else {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "URI not found!"));
       }

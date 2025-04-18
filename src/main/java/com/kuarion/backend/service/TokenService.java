@@ -12,6 +12,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.JWT;
 
+import com.kuarion.backend.entities.Enterprise;
 import com.kuarion.backend.entities.User;
 
 @Service
@@ -30,6 +31,22 @@ public class TokenService {
       return JWT.create()
              .withIssuer("jwtToken")
              .withSubject(user.getUsername())
+             .withExpiresAt(expirationTime())
+             .sign(algorithm);
+    } catch (JWTVerificationException e) {
+      throw new RuntimeException("Token could not be created: ", e);
+    }
+  }
+  
+  public String createEnterpriseToken(Enterprise enterprise) {
+    try {
+      
+      // the environment variable is hashed using HMAC 256 bits
+      Algorithm algorithm = Algorithm.HMAC512(tokenSecret);
+      
+      return JWT.create()
+             .withIssuer("jwtToken")
+             .withSubject(enterprise.getUsername())
              .withExpiresAt(expirationTime())
              .sign(algorithm);
     } catch (JWTVerificationException e) {
