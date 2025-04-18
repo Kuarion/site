@@ -1,4 +1,4 @@
-package com.kuarion.backend.components;
+	package com.kuarion.backend.components;
 
 import com.kuarion.backend.entities.Question;
 import com.kuarion.backend.repositories.QuestionRepository;

@@ -21,11 +21,11 @@ public class EnterpriseSurveyAnswers {
     private Long id;
     
 	  @OneToOne
-	  @JoinColumn(name = "user_id")
+	  @JoinColumn(name = "enterprise_id")
 	  private Enterprise enterprise;
 	  
 	  @OneToMany(mappedBy = "response", cascade = CascadeType.ALL)
-	  private List<Answer> answers = new ArrayList<>();
+	  private List<EnterpriseAnswer> answers = new ArrayList<>();
 	  
 	  private LocalDateTime responseData;
 
@@ -33,7 +33,7 @@ public class EnterpriseSurveyAnswers {
 		super();
 	}
 	
-	public EnterpriseSurveyAnswers(Long id, Enterprise enterprise, List<Answer> answers, LocalDateTime responseData) {
+	public EnterpriseSurveyAnswers(Long id, Enterprise enterprise, List<EnterpriseAnswer> answers, LocalDateTime responseData) {
 		super();
 		this.id = id;
 		this.enterprise = enterprise;
@@ -50,15 +50,22 @@ public class EnterpriseSurveyAnswers {
 	}
 	
 	
-	
-	public List<Answer> getAnswers() {
+	public Enterprise getEnterprise() {
+		return enterprise;
+	}
+
+	public void setEnterprise(Enterprise enterprise) {
+		this.enterprise = enterprise;
+	}
+
+	public List<EnterpriseAnswer> getAnswers() {
 		return answers;
 	}
-	
-	public void setAnswers(List<Answer> answers) {
+
+	public void setAnswers(List<EnterpriseAnswer> answers) {
 		this.answers = answers;
 	}
-	
+
 	public LocalDateTime getResponseData() {
 		return responseData;
 	}

@@ -2,6 +2,7 @@ package com.kuarion.backend.entities;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,35 +22,29 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity @Table(name = "users")
-@Getter @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode
 public class User implements UserDetails {
   
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id; // primary key
   
-  @Setter @Column(nullable = false, unique = false)
+  @Column(nullable = false, unique = false)
   private String firstName;
   
-  @Setter @Column(nullable = true, unique = false)
+  @Column(nullable = false, unique = false)
   private String lastName;
    
-  @Setter @Column(nullable = true, unique = true)
+  @Column(nullable = false, unique = true)
   private String username;
   
-  @Setter @Column(nullable = true, unique = true)
+  @Column(nullable = false, unique = true)
   private String email;
   
-  @Setter @Column(nullable = false, unique = false)
+  @Column(nullable = false, unique = false)
   private String password;
   
-  @Setter @Enumerated(EnumType.STRING)
+  @Enumerated(EnumType.STRING)
   private Roles role; // user role
   
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
@@ -72,6 +67,18 @@ public Long getId() {
 }
 
 // required methods from UserDetails interface
+  public User() {}
+  
+  public User(String firstName, String lastName, String username, String email, String password, Roles role) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.role = role;
+  }
+  
+  // required methods from UserDetails interface
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     
@@ -82,10 +89,8 @@ public Long getId() {
         new SimpleGrantedAuthority("ROLE_USER"),
         new SimpleGrantedAuthority("ROLE_ENTERPRISE")
       );
-    } else if (this.role == role.USER) {
-      return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     } else {
-      return List.of(new SimpleGrantedAuthority("ROLE_ENTERPRISE"));
+      return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
   }
 
@@ -109,54 +114,70 @@ public Long getId() {
     return true;
   }
 
-public String getFirstName() {
-	return firstName;
-}
-
-public void setFirstName(String firstName) {
-	this.firstName = firstName;
-}
-
-public String getLastName() {
-	return lastName;
-}
-
-public void setLastName(String lastName) {
-	this.lastName = lastName;
-}
-
-public String getUsername() {
-	return username;
-}
-
-public void setUsername(String username) {
-	this.username = username;
-}
-
-public String getEmail() {
-	return email;
-}
-
-public void setEmail(String email) {
-	this.email = email;
-}
-
-public String getPassword() {
-	return password;
-}
-
-public void setPassword(String password) {
-	this.password = password;
-}
-
-public Roles getRole() {
-	return role;
-}
-
-public void setRole(Roles role) {
-	this.role = role;
-}
-
   
 
+  
+  @Override
+  public String getUsername() {
+    return this.username;
+  }
+  
+  public void setUsername(String username) {
+    this.username = username;
+  }
+  
+  @Override
+  public String getPassword() {
+    return this.password;
+  }
+  
+  public void setPassword(String password) {
+    this.password = password;
+  }
+  
+  public String getFirstName() {
+    return this.firstName;
+  }
+  
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+  
+  public String getLastName() {
+    return this.lastName;
+  }
+  
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+  
+  public String getEmail() {
+    return this.email;
+  }
+  
+  public void setEmail(String email) {
+    this.email = email;
+  }
+  
+  public Roles getRole() {
+    return this.role;
+  }
+  
+  public void setRole(Roles role) {
+    this.role = role;
+  }
+  
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (getClass() != obj.getClass()) return false;
+    User other = (User) obj;
+    return Objects.equals(id, other.id);
+  }
+        
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  } 
 }

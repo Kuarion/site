@@ -28,6 +28,14 @@ public class SurveyController {
 		return ResponseEntity.ok(Collections.singletonMap("hasResponded", hasResponded));
 		
 	}
+	
+	@GetMapping("/survey/status/enterprise/{enterpriseId}")
+	public ResponseEntity<?> checkEnterpriseResponseStatus(@PathVariable Long enterpriseId){
+		boolean hasResponded = surveyService.hasEnterpriseResponded(enterpriseId);
+		return ResponseEntity.ok(Collections.singletonMap("hasResponded", hasResponded));
+		
+	}
+	
 	@PostMapping("/survey/submit/{userId}")
     public ResponseEntity<?> submitQuestionnaire(
             @PathVariable Long userId,
@@ -40,13 +48,22 @@ public class SurveyController {
         }
     }
 	
-	@PostMapping("/survey/company/submit/{enterpriseId")
+	@PostMapping("/survey/enterprise/submit/{enterpriseId}")
 	public ResponseEntity<?> submitCompanySurvey(@PathVariable Long enterpriseId, @RequestBody Map<Long, String> answers){
 		try {
+			
 			surveyService.submitCompanySurveyAnswer(enterpriseId, answers);
+			return ResponseEntity.ok().build();
 		}catch(Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
+	}
+	
+	
+	@GetMapping("/survey/enterprise/statistics")
+	public ResponseEntity<?> getEnterpriseStatistics(){
+		Map<String, Map<String, Long>> statistics = surveyService.getEnterpriseQuestionStatistics();
+		return ResponseEntity.ok(statistics);
 	}
 	
 	@GetMapping("/survey/statistics")

@@ -12,8 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -28,10 +26,10 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
      return httpSecurity
         .csrf(csrf -> csrf.disable())
-          
         // authentication based in token: stateless security policy
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
+
           .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat/**",  "/survey/**").permitAll()
           .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat/message", "/survey/**").permitAll()
           .requestMatchers(HttpMethod.DELETE, "/api/chat/history/delete").permitAll()
@@ -40,6 +38,9 @@ public class SecurityConfig {
           
           .requestMatchers(HttpMethod.GET, "/statistics").permitAll()
           
+          .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat").permitAll()
+          .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat").permitAll()
+          .requestMatchers(HttpMethod.GET, "/dashboard/**").authenticated()
           .anyRequest().denyAll()
         )
         .logout(logout -> logout
@@ -49,6 +50,8 @@ public class SecurityConfig {
            .deleteCookies("jwtToken")
            .permitAll()
          )
+
+        // the tokenFilter will intercept all protected routes before UsernamePasswordAuthenticationFilter
         .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
   }
