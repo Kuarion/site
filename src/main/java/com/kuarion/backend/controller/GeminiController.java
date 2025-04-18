@@ -15,33 +15,57 @@ import com.kuarion.backend.service.ChatService;
 
 @RestController
 public class GeminiController {
-	
-	private final ChatService chatService;
-	
-	
-		@Autowired
-	    public GeminiController(ChatService chatService) {
-			super();
-			this.chatService = chatService;
-		}
-		
-		
-	  @PostMapping("/api/chat/message")
-	    public ResponseEntity<ChatResponse> sendMessage(@RequestBody ChatRequest request) {
-	        ChatResponse response = chatService.processUserMessage(request);
-	        return ResponseEntity.ok(response);
-	    }
-
-	    @GetMapping("/api/chat/history")
-	    public ResponseEntity<ChatHistoryResponse> getChatHistory() {
-	        ChatHistoryResponse history = chatService.getChatHistory();
-	        return ResponseEntity.ok(history);
-	    }
-
-	    @DeleteMapping("/api/chat/history")
-	    public ResponseEntity<Void> clearChatHistory() {
-	        chatService.clearChatHistory();
-	        return ResponseEntity.noContent().build();
-	    }    
     
+    private final ChatService chatService;
+    
+    @Autowired
+    public GeminiController(ChatService chatService) {
+        this.chatService = chatService;
+    }
+
+    // Endpoint técnico original (continua existindo)
+	@PostMapping("/api/chat/message")
+	public ResponseEntity<ChatResponse> sendMessage(@RequestBody ChatRequest request) {
+		// Log para verificar se o corpo da requisição chegou corretamente
+		System.out.println("Recebido no backend: " + request);
+	
+		// Processa a mensagem e retorna a resposta
+		ChatResponse response = chatService.processUserMessage(request);
+		
+		// Log para verificar a resposta que está sendo gerada
+		System.out.println("Resposta gerada: " + response);
+	
+		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/api/chat")
+	public ResponseEntity<ChatResponse> handleChatFrontend(@RequestBody ChatRequest request) {
+		// Log para verificar se o corpo da requisição chegou corretamente
+		System.out.println("Recebido no frontend: " + request);
+	
+		// Processa a mensagem e retorna a resposta
+		ChatResponse response = chatService.processUserMessage(request);
+		
+		// Log para verificar a resposta que está sendo gerada
+		System.out.println("Resposta do frontend: " + response);
+	
+		return ResponseEntity.ok(response);
+	}
+	
+
+    // Endpoint para pegar o histórico de chats
+    @GetMapping("/api/chat/history")
+    public ResponseEntity<ChatHistoryResponse> getChatHistory() {
+        // Retorna o histórico de chat
+        ChatHistoryResponse history = chatService.getChatHistory();
+        return ResponseEntity.ok(history);
+    }
+
+    // Endpoint para limpar o histórico de chats
+    @DeleteMapping("/api/chat/history")
+    public ResponseEntity<Void> clearChatHistory() {
+        // Limpa o histórico
+        chatService.clearChatHistory();
+        return ResponseEntity.noContent().build();
+    }    
 }

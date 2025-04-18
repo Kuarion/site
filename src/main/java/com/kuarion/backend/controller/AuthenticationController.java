@@ -1,7 +1,9 @@
 package com.kuarion.backend.controller;
 
 import java.util.Map;
-import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseCookie;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -33,6 +36,9 @@ import com.kuarion.backend.service.UserService;
 
 @RestController @RequestMapping(value = "/authentication")
 public class AuthenticationController {
+  
+  private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);  // Criando o logger
+
   private UserService userService;
   private PasswordEncoder passwordEncoder;
   private AuthenticationManager authenticationManager;
@@ -49,65 +55,62 @@ public class AuthenticationController {
   @PostMapping(value = "/{type}/register")
   public ResponseEntity signup(@PathVariable String type, @RequestBody RegisterDTO data, Roles role) {
     try {
-      // condition to verify if it's a common user
+      logger.info("Registro solicitado para tipo: " + type);  // Logando o tipo de registro
       if (type.equalsIgnoreCase("pf")) {
         var email = this.userService.emailExists(data.email());
         var username = this.userService.usernameExists(data.username());
-        // condition to verify if email or username already exists
         if (email || username) {
           throw new EmailOrUsernameAlreadyExists("Email or username already exists!");
         }
-        // it calls the bean `passwordEncoder`
         String encryptedPassword = this.passwordEncoder.encode(data.password());
-        // create a new user
         this.userService.createUser(data.firstName(), data.lastName(), data.username(), data.email(), encryptedPassword, role.fromString("ROLE_USER"));
+        logger.info("Usuário criado com sucesso: " + data.username());  // Logando sucesso no registro
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("Message", "User created successfully!"));
-      // condition to verify if it's an enterprise
       } else {
+        logger.warn("Tipo de registro inválido: " + type);  // Logando tipo de registro inválido
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "URI not found!"));
       }
     } catch (EmailOrUsernameAlreadyExists e) {
+      logger.error("Erro de registro: " + e.getMessage(), e);  // Logando erro de usuário ou email já existente
       return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", e.getMessage()));
     }
   }
   
   @PostMapping(value = "/{type}/login")
   public ResponseEntity signin(@RequestBody LoginDTO data, @PathVariable String type, HttpServletResponse res) {
+    logger.info("Tentando login para usuário: " + data.username());  // Logando a tentativa de login
     try {
-      // condition to verify if it's a common user
       if (type.equalsIgnoreCase("pf")) {
-        // create a new authentication token to represents user authentication
         var authenticationToken = new UsernamePasswordAuthenticationToken(data.username(), data.password());
-        // it calls AuthenticationManager bean that will call an AuthenticationProvider. After this, AuthenticationProvider will use UserDetailsService and compare the password with the hashed one in the database
         var auth = this.authenticationManager.authenticate(authenticationToken);
-        // create the JWT token using current username as subject
         var token = this.tokenService.createToken((User) auth.getPrincipal());
-        // it calls the generateCookie method to create cookie that will keep token
+
+        logger.info("Autenticação bem-sucedida para usuário: " + data.username());  // Logando sucesso no login
+
         Cookie cookie = this.generateCookie(token);
-        // add cookie in HTTP header
         res.addCookie(cookie);
+
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("token", token));
-        
-        // important: the AuthenticationManager will not authenticate user itself. It will be a trigger to create cookie and token that will verified by TokenFilter
       } else {
+        logger.warn("Tipo de login inválido: " + type);  // Logando tipo de login inválido
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "URI not found!"));
       }
     } catch (BadCredentialsException e) {
+      logger.error("Credenciais inválidas para usuário: " + data.username(), e);  // Logando erro de credenciais inválidas
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Invalid credentials!"));
     } catch (LockedException e) {
+      logger.error("Conta bloqueada para usuário: " + data.username(), e);  // Logando erro de conta bloqueada
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", "Please, verify your email!"));
     }
   }
   
   private Cookie generateCookie(String token) {
     Cookie cookie = new Cookie("jwtToken", token);
-    
-    cookie.setHttpOnly(true); // avoid XSS attacks
-    cookie.setSecure(false); // it must be true (use false only for tests)
-    cookie.setPath("/"); // all paths
-    cookie.setAttribute("SameSite", "Strict"); // the cookie will be active only in the same sime it was created (avoid CSRF attacks)
-    cookie.setMaxAge(18000); // it will expire in five hours
-    
+    cookie.setHttpOnly(true); // evitar ataques XSS
+    cookie.setSecure(false); // deve ser true (use false apenas para testes)
+    cookie.setPath("/"); // para todos os caminhos
+    cookie.setAttribute("SameSite", "None"); // para evitar ataques CSRF
+    cookie.setMaxAge(18000); // expira em 5 horas
     return cookie;
   }
 }

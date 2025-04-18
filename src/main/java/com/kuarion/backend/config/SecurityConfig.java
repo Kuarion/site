@@ -18,50 +18,62 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-  private TokenFilter tokenFilter;
-  
-  public SecurityConfig(TokenFilter tokenFilter) {
-    this.tokenFilter = tokenFilter;
-  }
 
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-     return httpSecurity
-        .csrf(csrf -> csrf.disable())
-          
-        // authentication based in token: stateless security policy
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth -> auth
-          .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat/message","/status/**" ,"/statistics" , "/api/chat/history", "/questions").permitAll()
-          .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat/message", "/submit/**").permitAll()
-          .requestMatchers(HttpMethod.DELETE, "/api/chat/history/delete").permitAll()
-          
-          .requestMatchers(HttpMethod.GET, "/dashboard").authenticated()
-          
-          .requestMatchers(HttpMethod.GET, "/statistics").permitAll()
-          
-          .anyRequest().denyAll()
-        )
-        .logout(logout -> logout
-           .logoutUrl("/dashboard/logout")
-           .logoutSuccessUrl("/")
-           .invalidateHttpSession(true)
-           .deleteCookies("jwtToken")
-           .permitAll()
-         )
-        .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
-        .build();
-  }
-    
-	
-	
+    private final TokenFilter tokenFilter;
+
+    public SecurityConfig(TokenFilter tokenFilter) {
+        this.tokenFilter = tokenFilter;
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity
+            .csrf(csrf -> csrf.disable())
+            .cors(cors -> {}) // Habilita CORS
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.GET,
+                    "/", "/login", "/index", "/api/chat/message", "/status/**", "/statistics",
+                    "/api/chat", "/api/chat/history", "/posts/**", "/questions").permitAll()
+                .requestMatchers(HttpMethod.POST,
+                    "/authentication/**", "/api/chat/message", "/posts/**", "/api/chat", "/submit/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/api/chat/history/delete", "/posts/delete").permitAll()
+                .requestMatchers(HttpMethod.GET, "/dashboard").authenticated()
+                .anyRequest().denyAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/dashboard/logout")
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .deleteCookies("jwtToken")
+                .permitAll()
+            )
+            .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:5000") // seu frontend
+                        .allowedMethods("*")
+                        .allowedHeaders("*")
+                        .exposedHeaders("Authorization") // permite que o frontend leia esse header
+                        .allowCredentials(true); // necessário se usar cookies
+            }
+        };
+    }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-      return authenticationConfiguration.getAuthenticationManager();
+        return authenticationConfiguration.getAuthenticationManager();
     }
-    
+
     @Bean
     public PasswordEncoder passwordEncoder() {
-      return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 }
