@@ -1,5 +1,6 @@
 package com.kuarion.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,6 +18,10 @@ public class Post {
     private String content;
     private LocalDateTime creationDate;
 
-    private String author;  // Agora é um campo de String (nome de usuário)
+    private String author;
 
+    @ManyToOne
+    @JoinColumn(name = "community_id")
+    @JsonBackReference // Prevents infinite recursion
+    private Community community;
 }

@@ -11,8 +11,8 @@ const parseJwt = (token) => {
   }
 };
 
-function ForumDetail() {
-  const { id } = useParams();
+function PostDetail() {
+  const { communityId, postId } = useParams(); // Agora pega tanto o ID da comunidade quanto o ID do post
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [message, setMessage] = useState('');
@@ -21,15 +21,15 @@ function ForumDetail() {
   useEffect(() => {
     fetchDetails();
     getUserName(); // Recupera o nome do usuário autenticado
-  }, [id]);
+  }, [postId, communityId]);
 
   const fetchDetails = async () => {
     try {
-      const res = await axios.get(`http://localhost:8081/posts/${id}`);
+      const res = await axios.get(`http://localhost:8081/forum/communities/${communityId}/posts/${postId}`);
       setPost(res.data.post);
       setComments(res.data.comments || []);
     } catch (err) {
-      console.error('Erro ao carregar detalhes:', err);
+      console.error('Erro ao carregar detalhes do post:', err);
     }
   };
 
@@ -46,14 +46,24 @@ function ForumDetail() {
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     if (!message.trim()) return;
-
+  
+    const token = localStorage.getItem('authToken'); // Retrieve the JWT token
+  
     try {
-      await axios.post(`http://localhost:8081/posts/${id}/comments`, {
-        author: username, // Usa o nome do usuário autenticado
-        message,
-      });
+      await axios.post(
+        `http://localhost:8081/forum/communities/${communityId}/posts/${postId}/add-comment`,
+        {
+          author: username, // Use the authenticated username
+          message,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+          },
+        }
+      );
       setMessage('');
-      fetchDetails();
+      fetchDetails(); // Reload the post and comments
     } catch (err) {
       console.error('Erro ao comentar:', err);
     }
@@ -93,9 +103,9 @@ function ForumDetail() {
       </form>
 
       <br />
-      <Link to="/forum">← Voltar para o fórum</Link>
+      <Link to={`/forum/communities/${communityId}`}>← Voltar para a comunidade</Link>
     </div>
   );
 }
 
-export default ForumDetail;
+export default PostDetail;

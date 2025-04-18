@@ -34,10 +34,10 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET,
                     "/", "/login", "/index", "/api/chat/message", "/status/**", "/statistics",
-                    "/api/chat", "/api/chat/history", "/posts/**", "/questions").permitAll()
+                    "/api/chat", "/api/chat/history", "/forum/**", "/questions").permitAll()
                 .requestMatchers(HttpMethod.POST,
-                    "/authentication/**", "/api/chat/message", "/posts/**", "/api/chat", "/submit/**").permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/api/chat/history/delete", "/posts/delete").permitAll()
+                    "/authentication/**", "/api/chat/message", "/forum/**", "/api/chat", "/submit/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/api/chat/history/delete", "/forum/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/dashboard").authenticated()
                 .anyRequest().denyAll()
             )

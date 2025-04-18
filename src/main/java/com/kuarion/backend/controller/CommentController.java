@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/comments")  // Alterado para "/comments"
+@RequestMapping("/forum/communities/{communityId}/posts/{postId}/comments")
 @RequiredArgsConstructor
 public class CommentController {
 
