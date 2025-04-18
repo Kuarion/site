@@ -3,6 +3,7 @@ package com.kuarion.backend.roles;
 public enum QuestionType {
 	MULTIPLE_CHOICE("QUESTION_MULTIPLE_CHOICE"),
 	TEXT("QUESTION_TEXT");
+
 	
 	private final String type;
 

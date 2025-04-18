@@ -34,11 +34,22 @@ public class SurveyService {
     @Autowired
     private AnswerRepository answerRepository;
     
+    
+    @Autowired
+    private EnterpriseSurveyAnswersRepository enterpriseSurveyAnswersRepository;
+    
     public Boolean hasResponded(Long userId) {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
         return surveyRepository.existsByUser(user);
     }
+    public Boolean hasEnterpriseResponded(Long enterpriseId) {
+        Enterprise enterprise = enterpriseRepository.findById(enterpriseId)
+            .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+        return surveyRepository.existsByUser(enterprise);
+    }
+    
+    
     
     public SurveyAnswers submitSurveyAnswer(Long userId, Map<Long, String> answers) {
         User user = userRepository.findById(userId)
@@ -66,6 +77,32 @@ public class SurveyService {
         
         return surveyRepository.save(surveyAnswers);
     }
+    
+    public SurveyAnswers submitCompanySurveyAnswer(Long enterpriseId, Map<Long, String> answers) {
+    	Enterprise enterprise = enterpriseRepository.findById(enterpriseId).orElse(() -> throw new RuntimeException("Empresa não encontrada !!"));
+    
+    	if(hasEnterpriseResponded(enterpriseId)) {
+    		throw new IllegalStateException("Empresa já respondeu o formulário !";)
+    	}
+    	EnterpriseSurveyAnswer surveyAnswer = newEnterpriseSurveyAnswer();
+    	surveyAnswer.setEnterprise(enterprise);
+    	
+    	for (Map.Entry<Long, String> entry : answers.entrySet()) {
+            Question question = questionRepository.findById(entry.getKey())
+                .orElseThrow(() -> new RuntimeException("Questão não encontrada com ID: " + entry.getKey()));
+            
+            Answer answer = new Answer();
+            answer.setQuestion(question);
+            answer.setAnswer(entry.getValue());
+            answer.setResponse(surveyAnswers);
+            answer.setAnswerType(AnswerType.USER_ANSWER);
+            
+            enterpriseSurveyAnswers.getAnswers().add(answer);
+        }
+        
+        return enterpriseSurveyRepository.save(surveyAnswers);
+    }
+
     
     public Map<String, Map<String, Long>> getQuestionStatistics() {
         List<Question> questions = questionRepository.findAll();

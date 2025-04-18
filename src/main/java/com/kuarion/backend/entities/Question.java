@@ -1,11 +1,9 @@
 package com.kuarion.backend.entities;
 
 import com.kuarion.backend.roles.QuestionType;
+import com.kuarion.backend.roles.QuestionPublic;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,7 +21,18 @@ public class Question {
 	
 	private QuestionType type;
 	
+	private QuestionPublic publico;
 	
+	
+	
+	public QuestionPublic getPublico() {
+		return publico;
+	}
+
+	public void setPublico(QuestionPublic publico) {
+		this.publico = publico;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -41,9 +50,10 @@ public class Question {
 		this.type = type;
 	}
 
-	public Question( String text, QuestionType type) {
+	public Question( String text, QuestionType type, QuestionPublic publico) {
 		this.text = text;
 		this.type = type;
+		this.publico = publico;
 	}
 
 

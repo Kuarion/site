@@ -40,7 +40,14 @@ public class SurveyController {
         }
     }
 	
-	
+	@PostMapping("/survey/company/submit/{enterpriseId")
+	public ResponseEntity<?> submitCompanySurvey(@PathVariable Long enterpriseId, @RequestBody Map<Long, String> answers){
+		try {
+			surveyService.submitCompanySurveyAnswer(enterpriseId, answers);
+		}catch(Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 	
 	@GetMapping("/survey/statistics")
 	    public ResponseEntity<?> getStatistics() {
