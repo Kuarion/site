@@ -2,12 +2,13 @@ package com.kuarion.backend.entities;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+// import lombok.AllArgsConstructor;
+// import lombok.EqualsAndHashCode;
+// import lombok.Getter;
+// import lombok.NoArgsConstructor;
+// import lombok.Setter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,29 +26,39 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.kuarion.backend.roles.Roles;
 
 @Entity @Table(name = "users")
-@Getter @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode
 public class User implements UserDetails {
   
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id; // primary key
   
-  @Setter @Column(nullable = false, unique = false)
+  @Column(nullable = false, unique = false)
   private String firstName;
   
-  @Setter @Column(nullable = false, unique = false)
+  @Column(nullable = false, unique = false)
   private String lastName;
    
-  @Setter @Column(nullable = false, unique = true)
+  @Column(nullable = false, unique = true)
   private String username;
   
-  @Setter @Column(nullable = false, unique = true)
+  @Column(nullable = false, unique = true)
   private String email;
   
-  @Setter @Column(nullable = false, unique = false)
+  @Column(nullable = false, unique = false)
   private String password;
   
-  @Setter @Enumerated(EnumType.STRING)
+  @Enumerated(EnumType.STRING)
   private Roles role; // user role
+  
+  public User() {}
+  
+  public User(String firstName, String lastName, String username, String email, String password, Roles role) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.role = role;
+  }
   
   // required methods from UserDetails interface
   @Override
@@ -84,4 +95,68 @@ public class User implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
+  
+  @Override
+  public String getUsername() {
+    return this.username;
+  }
+  
+  public void setUsername(String username) {
+    this.username = username;
+  }
+  
+  @Override
+  public String getPassword() {
+    return this.password;
+  }
+  
+  public void setPassword(String password) {
+    this.password = password;
+  }
+  
+  public String getFirstName() {
+    return this.firstName;
+  }
+  
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+  
+  public String getLastName() {
+    return this.lastName;
+  }
+  
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+  
+  public String getEmail() {
+    return this.email;
+  }
+  
+  public void setEmail(String email) {
+    this.email = email;
+  }
+  
+  public String getRole() {
+    return this.role;
+  }
+  
+  public void setRole(Roles role) {
+    this.role = role;
+  }
+  
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (getClass() != obj.getClass()) return false;
+    User other = (User) obj;
+    return Objects.equals(id, other.id);
+  }
+        
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  } 
 }

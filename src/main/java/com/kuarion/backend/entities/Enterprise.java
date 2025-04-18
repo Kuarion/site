@@ -2,6 +2,7 @@ package com.kuarion.backend.entities;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +24,7 @@ import com.kuarion.backend.roles.Roles;
 public class Enterprise implements UserDetails {
   
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Long id; // primary key
   
   @Column(nullable = false, unique = true)
   private String name;
@@ -35,7 +36,7 @@ public class Enterprise implements UserDetails {
   private String email;
   
   @Column(length = 16, nullable = false, unique = true)
-  @Pattern(regexp = "^\\d{2}.\\d{3}.\\d{3}/\\d{4}-\\d{2}$", message = "Invalid CNPJ! Expected format: XX.XXX.XXX/XXXX.XX")
+  @Pattern(regexp = "^\\d{2}.\\d{3}.\\d{3}/\\d{4}-\\d{2}$", message = "Invalid CNPJ! Expected format: XX.XXX.XXX/XXXX.XX") // regex: verifies if CNPJ is correct
   private String cnpj;
   
   @Column(nullable = false, unique = false)
@@ -44,19 +45,15 @@ public class Enterprise implements UserDetails {
   @Column(nullable = false, unique = false)
   private String ownerName;
   
-  @Enumerated(EnumType.STRING)
-  public Roles role;
-  
   public Enterprise() {}
   
-  public Enterprise(String name, String username, String email, String cnpj, String password, String ownerName, Roles role) {
+  public Enterprise(String name, String username, String email, String cnpj, String password, String ownerName) {
     this.name = name;
     this.username = username;
     this.email = email;
     this.cnpj = cnpj;
     this.password = password;
     this.ownerName = ownerName;
-    this.role = role;
   }
   
   @Override
@@ -133,14 +130,6 @@ public class Enterprise implements UserDetails {
   public void setOwnerName(String ownerName) {
     this.ownerName = ownerName;
   }
-  
-  public Roles getRole() {
-    return this.role;
-  }
-  
-  public void setRole(Roles role) {
-    this.role = role;
-  }
 
   @Override
   public boolean equals(Object obj) {
@@ -154,5 +143,5 @@ public class Enterprise implements UserDetails {
   @Override
   public int hashCode() {
     return Objects.hash(id);
-  } 
+  }
 }
