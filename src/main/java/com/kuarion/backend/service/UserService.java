@@ -26,7 +26,7 @@ public class UserService {
     user.setEmail(email);
     user.setPassword(password);
     user.setRole(role);
-    userRepository.save(user);
+    this.userRepository.save(user);
   }
   
   public boolean emailExists(String email) {
