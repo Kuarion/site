@@ -1,5 +1,7 @@
 package com.kuarion.backend.entities;
 
+import com.kuarion.backend.roles.AnswerType;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,17 @@ public class Answer {
 	private Question question;
 	
 	private String answer;
+
+	private AnswerType answerType;
+	
+	
+	public AnswerType getAnswerType() {
+		return answerType;
+	}
+
+	public void setAnswerType(AnswerType answerType) {
+		this.answerType = answerType;
+	}
 
 	public Long getId() {
 		return id;
@@ -53,7 +66,8 @@ public class Answer {
 		this.answer = answer;
 	}
 
-	public Answer(SurveyAnswers response, Question question, String answer) {
+	public Answer(SurveyAnswers response, Question question, String answer, AnswerType answerType) {
+		this.answerType = answerType;
 		this.response = response;
 		this.question = question;
 		this.answer = answer;

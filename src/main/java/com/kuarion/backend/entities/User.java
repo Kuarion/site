@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kuarion.backend.roles.Roles;
 
 import jakarta.persistence.CascadeType;
@@ -53,6 +54,7 @@ public class User implements UserDetails {
   
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
   @JoinColumn(name = "response_id", nullable = true)
+@JsonIgnore
   private SurveyAnswers surveyAnswers;
   
 

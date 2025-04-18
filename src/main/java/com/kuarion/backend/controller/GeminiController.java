@@ -53,7 +53,7 @@ public class GeminiController {
         return ResponseEntity.ok(history);
     } 
 
-    @DeleteMapping("/api/chat/history")
+    @DeleteMapping("/api/chat/history/delete")
     public ResponseEntity<Void> clearChatHistory() {
         chatService.clearChatHistory();
         

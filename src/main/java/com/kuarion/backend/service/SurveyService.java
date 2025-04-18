@@ -1,6 +1,7 @@
 package com.kuarion.backend.service;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ import com.kuarion.backend.repositories.AnswerRepository;
 import com.kuarion.backend.repositories.QuestionRepository;
 import com.kuarion.backend.repositories.SurveyAnswersRepository;
 import com.kuarion.backend.repositories.UserRepository;
+import com.kuarion.backend.roles.AnswerType;
 
 @Service
 public class SurveyService {
@@ -57,6 +59,7 @@ public class SurveyService {
             answer.setQuestion(question);
             answer.setAnswer(entry.getValue());
             answer.setResponse(surveyAnswers);
+            answer.setAnswerType(AnswerType.USER_ANSWER);
             
             surveyAnswers.getAnswers().add(answer);
         }
@@ -64,16 +67,16 @@ public class SurveyService {
         return surveyRepository.save(surveyAnswers);
     }
     
-    public Map<Question, Map<String, Long>> getQuestionStatistics() {
+    public Map<String, Map<String, Long>> getQuestionStatistics() {
         List<Question> questions = questionRepository.findAll();
-        Map<Question, Map<String, Long>> statistics = new HashMap<>();
+        Map<String, Map<String, Long>> statistics = new HashMap<>();
         
         for (Question question : questions) {
             List<Answer> answers = answerRepository.findByQuestion(question);
             Map<String, Long> countMap = answers.stream()
                 .collect(Collectors.groupingBy(Answer::getAnswer, Collectors.counting()));
             
-            statistics.put(question, countMap);
+            statistics.put(question.getText(), countMap);
         }
         
         return statistics;
@@ -98,7 +101,13 @@ public class SurveyService {
     public List<Question> getAllQuestions() {
         return questionRepository.findAll();
     }
-   
+    
+    
+    
+    
+    public List<Answer> getAllAnswers(){
+    	return answerRepository.findAll();
+    }
     /*
     public SurveyAnswers getUserSurvey(Long id) {
     	User user = userRepository.findById(id)
