@@ -17,6 +17,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -51,6 +52,7 @@ public class User implements UserDetails {
   private Roles role; // user role
   
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+  @JoinColumn(name = "response_id", nullable = true)
   private SurveyAnswers surveyAnswers;
   
 

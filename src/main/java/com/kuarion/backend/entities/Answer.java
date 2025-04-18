@@ -29,10 +29,6 @@ public class Answer {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public SurveyAnswers getResponse() {
 		return response;
 	}
@@ -57,17 +53,13 @@ public class Answer {
 		this.answer = answer;
 	}
 
-	public Answer(Long id, SurveyAnswers response, Question question, String answer) {
-		super();
-		this.id = id;
+	public Answer(SurveyAnswers response, Question question, String answer) {
 		this.response = response;
 		this.question = question;
 		this.answer = answer;
 	}
 
 	public Answer() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	

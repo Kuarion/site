@@ -1,8 +1,8 @@
 package com.kuarion.backend.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,4 +98,18 @@ public class SurveyService {
     public List<Question> getAllQuestions() {
         return questionRepository.findAll();
     }
+   
+    /*
+    public SurveyAnswers getUserSurvey(Long id) {
+    	User user = userRepository.findById(id)
+    			.orElseThrow(() -> new RuntimeException("Usuário não encontrado !"));
+   
+    
+    	SurveyAnswers sa = user.getSurveyAnswers();
+
+    	
+    }*/
+    
+    
+    
 }
