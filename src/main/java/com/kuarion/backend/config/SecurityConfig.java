@@ -26,7 +26,6 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
      return httpSecurity
         .csrf(csrf -> csrf.disable())
-          
         // authentication based in token: stateless security policy
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
@@ -42,7 +41,6 @@ public class SecurityConfig {
            .deleteCookies("jwtToken")
            .permitAll()
          )
-        // the tokenFilter will intercept all protected routes before UsernamePasswordAuthenticationFilter
         // the tokenFilter will intercept all protected routes before UsernamePasswordAuthenticationFilter
         .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
