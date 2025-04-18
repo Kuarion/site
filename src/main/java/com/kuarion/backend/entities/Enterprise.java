@@ -18,8 +18,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.kuarion.backend.roles.Roles;
-
 @Entity @Table(name = "enterprises")
 public class Enterprise implements UserDetails {
   
