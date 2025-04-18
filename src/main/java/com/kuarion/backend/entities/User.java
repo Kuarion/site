@@ -71,7 +71,7 @@ public class User implements UserDetails {
         new SimpleGrantedAuthority("ROLE_USER"),
         new SimpleGrantedAuthority("ROLE_ENTERPRISE")
       );
-    } else if (this.role == role.USER) {
+    } else {
       return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
   }
@@ -138,7 +138,7 @@ public class User implements UserDetails {
     this.email = email;
   }
   
-  public String getRole() {
+  public Roles getRole() {
     return this.role;
   }
   

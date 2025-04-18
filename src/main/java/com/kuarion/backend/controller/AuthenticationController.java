@@ -88,7 +88,7 @@ public class AuthenticationController {
       // it calls the bean `passwordEncoder`
       String encryptedPassword = this.passwordEncoder.encode(data.password());
       // create a new user
-      this.enterpriseService.createUser(data.name(), data.username(), data.email(), data.cnpj(), encryptedPassword, data.ownerName());
+      this.enterpriseService.createEnterprise(data.name(), data.username(), data.email(), data.cnpj(), encryptedPassword, data.ownerName());
       return ResponseEntity.status(HttpStatus.OK).body(Map.of("Message", "Enterprise created successfully!"));
     } catch (EnterpriseDataAlreadyExists e) {
       return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", e.getMessage()));

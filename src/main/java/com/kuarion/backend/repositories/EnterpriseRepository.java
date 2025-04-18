@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.kuarion.backend.entities.Enterprise;
 
 // EnterpriseRepository interface extends JpaRepository interface
-public interface EnterpriseRepository extends JpaRepository<Long, Enterprise> {
+public interface EnterpriseRepository extends JpaRepository<Enterprise, Long> {
   
   // finds an enterprise by its name
   Optional<Enterprise> findByName(String name);

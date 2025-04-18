@@ -34,7 +34,7 @@ public class Enterprise implements UserDetails {
   private String email;
   
   @Column(length = 18, nullable = false, unique = true)
-  @Pattern(regexp = "^\\d{2}.\\d{3}.\\d{3}/\\d{4}-\\d{2}$", message = "Invalid CNPJ! Expected format: XX.XXX.XXX/XXXX.XX") // regex: verifies if CNPJ is correct
+  @Pattern(regexp = "^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$", message = "Invalid CNPJ! Expected format: XX.XXX.XXX/XXXX.XX") // regex: verifies if CNPJ is correct
   private String cnpj;
   
   @Column(nullable = false, unique = false)
