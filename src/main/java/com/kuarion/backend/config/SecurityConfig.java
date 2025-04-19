@@ -22,6 +22,7 @@ public class SecurityConfig {
     this.tokenFilter = tokenFilter;
   }
 
+
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
      return httpSecurity
@@ -30,9 +31,9 @@ public class SecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
 
-          .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat/**",  "/survey/**").permitAll()
-          .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat/message", "/survey/**").permitAll()
-          .requestMatchers(HttpMethod.DELETE, "/api/chat/history/delete").permitAll()
+          .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat/**",  "/survey/**", "/forum/**").permitAll()
+          .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat/message", "/survey/**", "/forum/**").permitAll()
+          .requestMatchers(HttpMethod.DELETE, "/api/chat/history/delete", "/forum/**").permitAll()
           
           .requestMatchers(HttpMethod.GET, "/dashboard").authenticated()
           
@@ -55,7 +56,7 @@ public class SecurityConfig {
         .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
   }
-    
+
 	
 	
     @Bean

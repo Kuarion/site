@@ -23,26 +23,24 @@ public class PostService {
         this.commentRepository = commentRepository;
     }
 
+    // Criar Post
     public Post createPost(Post post) {
-        // Pega o usuário autenticado do JWT
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        post.setAuthor(username); // Garante que o autor seja o do token
+        post.setAuthor(username);
         post.setCreationDate(LocalDateTime.now());
-
         return postRepository.save(post);
     }
 
-    public List<Post> listPosts() {
-        return postRepository.findAll();
+    // Listar Posts por Comunidade
+    public List<Post> listPostsByCommunity(Long communityId) {
+        return postRepository.findByCommunityId(communityId);  // Filtra os posts pela comunidade
     }
 
-    public PostCommentDTO getPostWithComments(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new ResourceNotFoundException("Post não encontrado com o ID: " + postId));
-
+    // Buscar Post com Comentários
+    public PostCommentDTO getPostWithComments(Long communityId, Long postId) {
+        Post post = postRepository.findByCommunityIdAndId(communityId, postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Post não encontrado para a comunidade com o ID: " + postId));
         List<Comment> comments = commentRepository.findByPostId(postId);
-
         return new PostCommentDTO(post, comments);
     }
 
@@ -55,7 +53,6 @@ public class PostService {
         if (!postRepository.existsById(postId)) {
             throw new ResourceNotFoundException("Post não encontrado com o ID: " + postId);
         }
-
         updatedPost.setId(postId);
         return postRepository.save(updatedPost);
     }
