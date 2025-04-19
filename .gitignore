@@ -36,5 +36,6 @@ build/
 
 # Arquivos de configuração local
 src/main/resources/application-local.properties
+src/main/resources/application-dev.properties
 *.secret.*
 /secrets/
