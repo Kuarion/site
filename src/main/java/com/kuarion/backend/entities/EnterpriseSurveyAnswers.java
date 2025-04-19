@@ -3,6 +3,7 @@ package com.kuarion.backend.entities;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -73,7 +74,25 @@ public class EnterpriseSurveyAnswers {
 	public void setResponseData(LocalDateTime responseData) {
 		this.responseData = responseData;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(answers, enterprise, id, responseData);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EnterpriseSurveyAnswers other = (EnterpriseSurveyAnswers) obj;
+		return Objects.equals(answers, other.answers) && Objects.equals(enterprise, other.enterprise)
+				&& Objects.equals(responseData, other.responseData);
+	}
 	  
-	  
+	
 	
 }

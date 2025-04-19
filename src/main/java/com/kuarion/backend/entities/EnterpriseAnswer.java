@@ -1,5 +1,7 @@
 package com.kuarion.backend.entities;
 
+import java.util.Objects;
+
 import com.kuarion.backend.roles.AnswerType;
 
 import jakarta.persistence.Entity;
@@ -74,6 +76,24 @@ public class EnterpriseAnswer {
 	}
 
 	public EnterpriseAnswer() {
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(answer, answerType, id, question, response);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EnterpriseAnswer other = (EnterpriseAnswer) obj;
+		return Objects.equals(answer, other.answer) && answerType == other.answerType 
+				&& Objects.equals(question, other.question) && Objects.equals(response, other.response);
 	}
 	
 	
