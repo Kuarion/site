@@ -31,7 +31,7 @@ public class SecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
 
-          .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat/**",  "/survey/**", "/forum/**").permitAll()
+          .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/**",  "/survey/**", "/forum/**").permitAll()
           .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat/message", "/survey/**", "/forum/**").permitAll()
           .requestMatchers(HttpMethod.DELETE, "/api/chat/history/delete", "/forum/**").permitAll()
           

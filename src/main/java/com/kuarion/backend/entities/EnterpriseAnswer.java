@@ -2,6 +2,7 @@ package com.kuarion.backend.entities;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kuarion.backend.roles.AnswerType;
 
 import jakarta.persistence.Entity;
@@ -22,6 +23,7 @@ public class EnterpriseAnswer {
 	
 	@ManyToOne
 	@JoinColumn(name = "reponse_id")
+	@JsonIgnore
 	private EnterpriseSurveyAnswers response;
 
 	@ManyToOne

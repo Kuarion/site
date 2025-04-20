@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,9 +26,10 @@ public class EnterpriseSurveyAnswers {
     
 	  @OneToOne
 	  @JoinColumn(name = "enterprise_id")
+	  @JsonIgnore
 	  private Enterprise enterprise;
 	  
-	  @OneToMany(mappedBy = "response", cascade = CascadeType.ALL)
+	  @OneToMany(mappedBy = "response", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	  private List<EnterpriseAnswer> answers = new ArrayList<>();
 	  
 	  private LocalDateTime responseData;
