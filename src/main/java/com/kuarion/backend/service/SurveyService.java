@@ -174,6 +174,7 @@ public class SurveyService {
     public List<Answer> getAllAnswers(){
     	return answerRepository.findAll();
     }
+    
     /*
     public SurveyAnswers getUserSurvey(Long id) {
     	User user = userRepository.findById(id)
