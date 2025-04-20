@@ -171,8 +171,9 @@ public class SurveyService {
     
     
     
-    public List<Answer> getAllAnswers(){
-    	return answerRepository.findAll();
+    public List<String> getAllAnswers(){
+    	
+    return enterpriseAnswerRepository.findUniqueAnswers();
     }
     
     /*

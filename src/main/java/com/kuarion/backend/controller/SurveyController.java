@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kuarion.backend.entities.Answer;
+import com.kuarion.backend.entities.EnterpriseAnswer;
 import com.kuarion.backend.entities.Question;
 import com.kuarion.backend.service.SurveyService;
 
@@ -78,8 +78,8 @@ public class SurveyController {
 	    	return surveyService.getAllQuestions();
 	    }
 	    
-	    @GetMapping("/survey/answers") 
-	    public List<Answer> getAnswers(){
+	    @GetMapping("/survey/enterprise/answers") 
+	    public List<String> getAnswers(){
 	    	return surveyService.getAllAnswers();
 	    }
 	    
