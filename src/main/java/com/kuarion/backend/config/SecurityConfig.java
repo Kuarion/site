@@ -47,7 +47,6 @@ public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws
         .csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
-<<<<<<< HEAD
             // Add this line for the dev endpoint
             .requestMatchers(HttpMethod.POST, "/api/dev/**").permitAll()
             // ...existing matchers...
@@ -60,21 +59,6 @@ public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws
             .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat").permitAll()
             .requestMatchers(HttpMethod.GET, "/dashboard/**").authenticated()
             .anyRequest().denyAll()
-=======
-
-          .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/**",  "/survey/**", "/forum/**").permitAll()
-          .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat/message", "/survey/**", "/forum/**").permitAll()
-          .requestMatchers(HttpMethod.DELETE, "/api/chat/history/delete", "/forum/**").permitAll()
-          
-          .requestMatchers(HttpMethod.GET, "/dashboard").authenticated()
-          
-          .requestMatchers(HttpMethod.GET, "/statistics").permitAll()
-          
-          .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat").permitAll()
-          .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat").permitAll()
-          .requestMatchers(HttpMethod.GET, "/dashboard/**").authenticated()
-          .anyRequest().denyAll()
->>>>>>> 50ebc4b662b7c517860e6499eb1461d252e4e5f4
         )
             .logout(logout -> logout
                 .logoutUrl("/dashboard/logout")
