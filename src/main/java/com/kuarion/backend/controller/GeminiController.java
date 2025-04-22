@@ -29,6 +29,15 @@ public class GeminiController {
     public ResponseEntity<ChatResponse> sendMessage(@RequestBody ChatRequest request) {
         String systemPrompt = "";
     	ChatHistoryResponse chatResponse = chatService.getChatHistory();
+    	systemPrompt = sb.append("Olá, seu nome é KuarIA. Você é um agente chatbot da empresa Kuarion. "
+    			+ "Kuarion é uma empresa virtual cuja proposta é conscientizar o povo sobre o uso de energia solar,  "
+    			+ "ajudar o cliente nesse processo e na compra, e fazer um sistema que ajuda universalmente as empresas de energia solar."
+    			+ "Como um agente de IA chatbot profissional, sua tarefa é ajudar a Kuarion a cumprir seus objetivos. Fale com o cliente"
+    			+ "de forma clara, objetiva e compreensiva. Se não souber a resposta para alguma coisa, não minta nem faça suposições,"
+    			+ "explique que não sabe a resposta e porquê não sabe. Ajude a Kuarion a alcançar suas metas, sem apostar em suposições com pouco embasamento."
+    			+ "Ajude o cliente a se tornar mais informado e interessado sobre o assunto. Lembre-se também da possibilidade de Empresas registradas na Kuarion"
+    			+ "falarem com você também. Boa sorte, KuarIA!")
+    			.toString();
     	if(chatResponse != null && chatResponse.exchanges().size() <= 10) {
     		for(ChatExchange ce : chatResponse.exchanges()) {
     		systemPrompt =
@@ -43,7 +52,7 @@ public class GeminiController {
         			sb.append("essa é a primeira mensagem que o usuário te envia uma mensagem !").toString();
         }
     	ChatResponse response = chatService.processUserMessage(request, systemPrompt);
-        
+        System.out.println(systemPrompt);
         return ResponseEntity.ok(response);
     }
 
