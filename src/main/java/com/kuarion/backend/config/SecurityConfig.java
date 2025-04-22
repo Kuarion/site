@@ -59,19 +59,6 @@ public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws
             .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat").permitAll()
             .requestMatchers(HttpMethod.GET, "/dashboard/**").authenticated()
             .anyRequest().denyAll()
-
-          .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/**",  "/survey/**", "/forum/**").permitAll()
-          .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat/message", "/survey/**", "/forum/**").permitAll()
-          .requestMatchers(HttpMethod.DELETE, "/api/chat/history/delete", "/forum/**").permitAll()
-          
-          .requestMatchers(HttpMethod.GET, "/dashboard").authenticated()
-          
-          .requestMatchers(HttpMethod.GET, "/statistics").permitAll()
-          
-          .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat").permitAll()
-          .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat").permitAll()
-          .requestMatchers(HttpMethod.GET, "/dashboard/**").authenticated()
-          .anyRequest().denyAll()
         )
             .logout(logout -> logout
                 .logoutUrl("/dashboard/logout")
