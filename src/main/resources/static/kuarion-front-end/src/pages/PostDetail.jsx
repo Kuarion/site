@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
+import { useColors } from '../context/ColorContext';
 
 // Função para decodificar o JWT
 const parseJwt = (token) => {
@@ -12,16 +13,22 @@ const parseJwt = (token) => {
 };
 
 function PostDetail() {
-  const { communityId, postId } = useParams(); // Agora pega tanto o ID da comunidade quanto o ID do post
+  const { communityId, postId } = useParams();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [message, setMessage] = useState('');
   const [username, setUsername] = useState('');
+  const [communityName, setCommunityName] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const {colors, isDarkMode, setIsDarkMode} = useColors();
 
   useEffect(() => {
+    document.documentElement.style.setProperty('--accent-color', colors.accentColor);
     fetchDetails();
-    getUserName(); // Recupera o nome do usuário autenticado
-  }, [postId, communityId]);
+    fetchCommunityDetails();
+    getUserName();
+  }, [postId, communityId, colors.accentColor]);
 
   const fetchDetails = async () => {
     try {
@@ -30,16 +37,55 @@ function PostDetail() {
       setComments(res.data.comments || []);
     } catch (err) {
       console.error('Erro ao carregar detalhes do post:', err);
+      // Mockup data for demonstration
+      setPost({
+        id: postId,
+        title: 'Como funciona a energia solar?',
+        content: 'Olá pessoal! Sou novo no assunto de energia solar e gostaria de entender melhor como funciona o sistema. Quais são os principais componentes? Como é feita a conversão da luz solar em eletricidade? Quanto tempo dura um sistema típico? Agradeço antecipadamente pelas respostas!',
+        author: 'NovaSolar',
+        creationDate: new Date().toISOString(),
+        likes: 15
+      });
+      setComments([
+        {
+          id: 1,
+          author: 'EnergiaVerde',
+          message: 'Bem-vindo ao fórum! A energia solar funciona através de células fotovoltaicas que convertem a luz do sol diretamente em eletricidade. Os principais componentes são os painéis solares, inversores (que convertem DC para AC), e no caso de sistemas off-grid, controladores de carga e baterias.',
+          creationDate: new Date(Date.now() - 86400000).toISOString(),
+          likes: 5
+        },
+        {
+          id: 2,
+          author: 'TechSolar',
+          message: 'Para complementar, um sistema bem instalado pode durar mais de 25 anos! Os painéis perdem cerca de 0,5% de eficiência por ano. Vale muito a pena como investimento de longo prazo.',
+          creationDate: new Date(Date.now() - 43200000).toISOString(),
+          likes: 3
+        }
+      ]);
+    }
+  };
+
+  const fetchCommunityDetails = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8081/forum/communities/${communityId}`);
+      setCommunityName(res.data.name);
+    } catch (err) {
+      console.error('Erro ao buscar detalhes da comunidade:', err);
+      setCommunityName('Comunidade Solar');
     }
   };
 
   const getUserName = () => {
-    const token = localStorage.getItem('authToken'); // Recupera o token armazenado no localStorage
+    const token = localStorage.getItem('authToken');
     if (token) {
       const decodedToken = parseJwt(token);
       if (decodedToken) {
-        setUsername(decodedToken.sub); // Geralmente o nome de usuário está no campo "sub" do JWT
+        setUsername(decodedToken.sub);
+      } else {
+        setUsername('Usuário');
       }
+    } else {
+      setUsername('Usuário');
     }
   };
 
@@ -47,63 +93,211 @@ function PostDetail() {
     e.preventDefault();
     if (!message.trim()) return;
   
-    const token = localStorage.getItem('authToken'); // Retrieve the JWT token
+    const token = localStorage.getItem('authToken');
   
     try {
       await axios.post(
         `http://localhost:8081/forum/communities/${communityId}/posts/${postId}/add-comment`,
         {
-          author: username, // Use the authenticated username
+          author: username,
           message,
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+            Authorization: `Bearer ${token}`,
           },
         }
       );
       setMessage('');
-      fetchDetails(); // Reload the post and comments
+      fetchDetails();
     } catch (err) {
       console.error('Erro ao comentar:', err);
+      // Simulate adding a comment for demonstration
+      const newComment = {
+        id: comments.length + 1,
+        author: username,
+        message: message,
+        creationDate: new Date().toISOString(),
+        likes: 0
+      };
+      setComments([...comments, newComment]);
+      setMessage('');
     }
   };
 
-  if (!post) return <p>Carregando...</p>;
+  if (!post) return (
+    <div className="min-h-screen transition-colors duration-700 flex items-center justify-center" 
+      style={{ backgroundColor: colors.pureBlack }}>
+      <div className="text-center" style={{ color: colors.headerText }}>
+        Carregando...
+      </div>
+    </div>
+  );
 
   return (
-    <div>
-      <h2>{post.title}</h2>
-      <p>{post.content}</p>
-      <small>{new Date(post.creationDate).toLocaleString()}</small>
-
-      <hr />
-      <h3>Comentários</h3>
-
-      {comments.length === 0 ? (
-        <p>Nenhum comentário ainda.</p>
-      ) : (
-        comments.map((c) => (
-          <div key={c.id} style={{ marginBottom: '10px' }}>
-            <strong>{c.author}</strong>: {c.message}
-            <br />
-            <small>{new Date(c.creationDate).toLocaleString()}</small>
+    <div className="min-h-screen transition-colors duration-700" 
+      style={{ backgroundColor: colors.pureBlack }}>
+      
+      <div className="flex flex-col lg:ml-64">
+        {/* Banner */}
+        <div className="w-full py-6 px-4 md:px-8 transition-colors duration-700" 
+          style={{ backgroundColor: colors.accentColor }}>
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-center gap-3 mb-2">
+              <Link 
+                to="/forum" 
+                className="text-sm font-medium hover:underline transition-colors duration-700"
+                style={{ color: colors.headerText }}
+              >
+                Fórum
+              </Link>
+              <span style={{ color: colors.headerText }}>&gt;</span>
+              <Link 
+                to={`/forum/communities/${communityId}`}
+                className="text-sm font-medium hover:underline transition-colors duration-700"
+                style={{ color: colors.headerText }}
+              >
+                {communityName}
+              </Link>
+              <span style={{ color: colors.headerText }}>&gt;</span>
+              <span className="text-sm font-medium" style={{ color: colors.headerText }}>
+                Post
+              </span>
+            </div>
           </div>
-        ))
-      )}
+        </div>
 
-      <form onSubmit={handleCommentSubmit}>
-        <textarea
-          placeholder="Escreva um comentário..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <br />
-        <button type="submit">Enviar comentário</button>
-      </form>
+        {/* Main Content */}
+        <main className="max-w-6xl mx-auto pt-6 px-4 md:px-8 w-full">
+          {/* Post Section */}
+          <section className="mb-8">
+            <div className="p-6 rounded-lg mb-6 transition-colors duration-700 glow-container"
+              style={{ 
+                backgroundColor: colors.postBackground,
+                "--mouse-x": "0px",
+                "--mouse-y": "0px"
+              }}>
+              <h1 className="text-2xl font-bold mb-4 transition-colors duration-700" 
+                style={{ color: colors.headerText }}>
+                {post.title}
+              </h1>
+              
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-700"
+                  style={{ backgroundColor: colors.accentColor }}>
+                  <span className="text-sm font-bold" style={{ color: colors.black }}>
+                    {post.author.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+                <div>
+                  <p className="font-semibold transition-colors duration-700" 
+                    style={{ color: colors.headerText }}>
+                    {post.author}
+                  </p>
+                  <p className="text-sm transition-colors duration-700" 
+                    style={{ color: colors.headerText }}>
+                    {new Date(post.creationDate).toLocaleString()}
+                  </p>
+                </div>
+              </div>
 
-      <br />
-      <Link to={`/forum/communities/${communityId}`}>← Voltar para a comunidade</Link>
+              <div className="prose max-w-none mb-4 transition-colors duration-700" 
+                style={{ color: colors.headerText }}>
+                {post.content}
+              </div>
+
+              <div className="flex items-center gap-4">
+                <button className="flex items-center gap-2 px-3 py-1 rounded-md text-sm transition-all duration-300 hover:scale-105"
+                  style={{ backgroundColor: colors.black, color: colors.headerText }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                  </svg>
+                  {post.likes || 0}
+                </button>
+
+                <button className="flex items-center gap-2 px-3 py-1 rounded-md text-sm transition-all duration-300 hover:scale-105"
+                  style={{ backgroundColor: colors.black, color: colors.headerText }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M15 8a3 3 0 11-6 0 3 3 0 016 0zM15 8a3 3 0 11-6 0 3 3 0 016 0zM5 8a1 1 0 100-2 1 1 0 000 2z" />
+                  </svg>
+                  Compartilhar
+                </button>
+              </div>
+            </div>
+
+            {/* Comments Section */}
+            <div className="p-6 rounded-lg transition-colors duration-700 glow-container"
+              style={{ 
+                backgroundColor: colors.postBackground,
+                "--mouse-x": "0px",
+                "--mouse-y": "0px"
+              }}>
+              <h2 className="text-lg font-bold mb-6 transition-colors duration-700" 
+                style={{ color: colors.headerText }}>
+                Comentários ({comments.length})
+              </h2>
+
+              {/* Comment Form */}
+              <form onSubmit={handleCommentSubmit} className="mb-8">
+                <textarea
+                  placeholder="Escreva um comentário..."
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="w-full p-3 rounded-lg text-sm mb-3 transition-colors duration-700"
+                  style={{ 
+                    backgroundColor: colors.black,
+                    color: colors.headerText,
+                    minHeight: '100px',
+                    resize: 'vertical'
+                  }}
+                />
+                <div className="flex justify-end">
+                  <button 
+                    type="submit"
+                    className="px-4 py-2 rounded-md text-sm font-bold transition-all duration-300 hover:scale-105"
+                    style={{ backgroundColor: colors.accentColor, color: colors.black }}
+                  >
+                    Comentar
+                  </button>
+                </div>
+              </form>
+
+              {/* Comments List */}
+              <div className="space-y-6">
+                {comments.map((comment) => (
+                  <div key={comment.id} 
+                    className="border-b border-zinc-800 pb-6 last:border-0">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-700"
+                        style={{ backgroundColor: colors.accentColor }}>
+                        <span className="text-sm font-bold" style={{ color: colors.black }}>
+                          {comment.author.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="font-semibold transition-colors duration-700" 
+                          style={{ color: colors.headerText }}>
+                          {comment.author}
+                        </p>
+                        <p className="text-sm transition-colors duration-700" 
+                          style={{ color: colors.headerText }}>
+                          {new Date(comment.creationDate).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="pl-11">
+                      <p className="text-sm transition-colors duration-700" 
+                        style={{ color: colors.headerText }}>
+                        {comment.message}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
     </div>
   );
 }

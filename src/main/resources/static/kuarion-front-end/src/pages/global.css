@@ -1,0 +1,23 @@
+/* Custom Scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #9F51D9 #0F131F;
+  }
+  
+  /* Chrome/Edge/Safari */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #0F131F;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #9F51D9;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #8A45C0;
+  }
