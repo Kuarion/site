@@ -1,6 +1,9 @@
 package com.kuarion.backend.entities;
 
 import com.kuarion.backend.roles.QuestionType;
+
+import java.util.Objects;
+
 import com.kuarion.backend.roles.QuestionPublic;
 
 import jakarta.persistence.Entity;
@@ -58,6 +61,24 @@ public class Question {
 
 
 	public Question() {
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, publico, text, type);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Question other = (Question) obj;
+		return publico == other.publico && Objects.equals(text, other.text)
+				&& type == other.type;
 	}
 	
 	

@@ -1,6 +1,7 @@
 package com.kuarion.backend.entities;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -58,5 +59,25 @@ public class ChatExchangeEntity {
 		}
 
 		public ChatExchangeEntity() {
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(botResponse, id, timestamp, userMessage);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			ChatExchangeEntity other = (ChatExchangeEntity) obj;
+			return Objects.equals(botResponse, other.botResponse) 
+					&& Objects.equals(timestamp, other.timestamp) && Objects.equals(userMessage, other.userMessage);
 		}		
+
+		
 }

@@ -171,9 +171,11 @@ public class SurveyService {
     
     
     
-    public List<Answer> getAllAnswers(){
-    	return answerRepository.findAll();
+    public List<String> getAllAnswers(){
+    	
+    return enterpriseAnswerRepository.findUniqueAnswers();
     }
+    
     /*
     public SurveyAnswers getUserSurvey(Long id) {
     	User user = userRepository.findById(id)
@@ -184,6 +186,7 @@ public class SurveyService {
 
     	
     }*/	
+    
     
     
     

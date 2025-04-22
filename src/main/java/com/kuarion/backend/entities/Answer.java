@@ -1,5 +1,9 @@
 package com.kuarion.backend.entities;
 
+import java.io.Serializable;
+import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.kuarion.backend.roles.AnswerType;
 
 import jakarta.persistence.Entity;
@@ -10,7 +14,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Answer {
+@JsonIgnoreProperties(value = {"response", "question"})
+public class Answer implements Serializable {
 
 	
 	@Id
@@ -74,6 +79,24 @@ public class Answer {
 	}
 
 	public Answer() {
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(answer, answerType, id, question, response);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Answer other = (Answer) obj;
+		return Objects.equals(answer, other.answer) && answerType == other.answerType 
+				&& Objects.equals(question, other.question) && Objects.equals(response, other.response);
 	}
 	
 	

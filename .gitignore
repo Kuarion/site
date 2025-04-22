@@ -4,6 +4,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 src/main/resources/application-dev.properties
+node_modules
+bin
 
 ### STS ###
 .apt_generated

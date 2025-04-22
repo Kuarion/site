@@ -1,28 +1,26 @@
 package com.kuarion.backend.entities;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
-import jakarta.validation.constraints.Pattern;
-
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Pattern;
 
 @Entity @Table(name = "enterprises")
 public class Enterprise implements UserDetails {
@@ -162,5 +160,11 @@ public Enterprise() {}
   @Override
   public int hashCode() {
     return Objects.hash(id);
+  }
+  
+  
+
+  public List<EnterpriseAnswer> getSurveyAnswersList() {
+      return enterpriseSurveyAnswers != null ? enterpriseSurveyAnswers.getAnswers() : Collections.emptyList();
   }
 }
