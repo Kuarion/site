@@ -1,0 +1,59 @@
+name: Deploy para VPS
+
+on:
+  push:
+    branches:
+      - main  # ou o nome do seu branch principal
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar SSH para o GitHub e VPS
+        run: |
+          # Cria a pasta .ssh
+          mkdir -p ~/.ssh
+
+          # Adiciona a chave privada do GitHub secret (para acessar o repositório privado)
+          echo "${{ secrets.GITHUB_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+          # Configura o SSH para usar a chave privada e permitir o acesso ao GitHub
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          
+          # Adiciona a chave SSH da VPS para conexão SSH na VPS
+          echo "${{ secrets.VPS_PRIVATE_KEY }}" > ~/.ssh/vps_id_ed25519
+          chmod 600 ~/.ssh/vps_id_ed25519
+          ssh-keyscan -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy via SSH
+        run: |
+          ssh -i ~/.ssh/vps_id_ed25519 -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+            # Entrar no diretório onde o projeto será colocado
+            cd /home/deploy || mkdir -p /home/deploy && cd /home/deploy
+
+            # Clonar o repositório privado do GitHub (usando a chave SSH para autenticação)
+            if [ ! -d "site" ]; then
+              git clone git@github.com:Kuarion/site.git site
+            else
+              cd site
+              git pull origin main
+            fi
+
+            # Build do Docker
+            docker build -t kuarion-app .
+
+            # Parar e remover o container existente, se necessário
+            docker stop kuarion-container || true && docker rm kuarion-container || true
+
+            # Rodar o novo container
+            docker run -d -p 80:8080 --name kuarion-container kuarion-app
+
+            # Verificar se o container está rodando
+            docker ps -a
+
+          EOF
