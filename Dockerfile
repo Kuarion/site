@@ -1,40 +1,42 @@
 # Etapa 1: Build do React
-FROM node:18-alpine as react-builder
+FROM node:18-alpine AS react-builder
 
-WORKDIR /app
+WORKDIR /app/frontend
 
-# Copiar apenas os arquivos necessários para instalar dependências primeiro
+# Copiar arquivos do frontend
 COPY src/main/resources/static/kuarion-front-end/package*.json ./
 RUN npm install
 
-# Agora copiar o restante do código
 COPY src/main/resources/static/kuarion-front-end/ ./
 RUN npm run build
 
-# Etapa 2: Build do Spring Boot
-FROM maven:3.9.4-eclipse-temurin-17 as spring-builder
+# Etapa 2: Build do Spring Boot (usando Java 21 para compatibilidade com o pom.xml)
+FROM maven:3.9.4-eclipse-temurin-21 AS spring-builder
 
 WORKDIR /app
 
-# Copiar o projeto inteiro
-COPY . .
+# Copiar o projeto backend (exceto o frontend que será substituído pelo build)
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
 
-# Copiar o build do React para dentro da pasta estática do Spring Boot
-COPY --from=react-builder /app/build/ src/main/resources/static/
+COPY src ./src
 
-# Compilar o projeto, pulando os testes
+# Remover o frontend original se existir
+RUN rm -rf src/main/resources/static/kuarion-front-end
+
+# Copiar o build do React para a pasta estática do Spring Boot
+COPY --from=react-builder /app/frontend/build/ src/main/resources/static/
+
+# Compilar o projeto
 RUN mvn clean package -DskipTests
 
-# Etapa 3: Imagem final mais leve com apenas o JRE
-FROM eclipse-temurin:17-jre-alpine
+# Etapa 3: Imagem final
+FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-# Copiar apenas o JAR final para a imagem
 COPY --from=spring-builder /app/target/*.jar app.jar
 
-# Expor a porta usada pelo Spring Boot
 EXPOSE 8080
 
-# Comando de inicialização
 ENTRYPOINT ["java", "-jar", "app.jar"]
