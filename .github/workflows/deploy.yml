@@ -43,15 +43,15 @@ jobs:
       - name: Add known hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -p ${{ secrets.VPS_PORT }} -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
-
+          ssh-keyscan -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+          
       - name: Deploy no VPS
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
           VPS_PORT: ${{ secrets.VPS_PORT }}
         run: |
-          ssh -o StrictHostKeyChecking=accept-new -i ~/.ssh/id_ed25519 ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "\
+          ssh -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "
             docker login -u s4rcc -p ${{ secrets.DOCKER_TOKEN }} && \
             docker pull s4rcc/kuarion:latest && \
             docker stop kuarion-container || true && \
@@ -61,23 +61,25 @@ jobs:
               --restart unless-stopped \
               -p 80:8080 \
               -e SPRING_PROFILES_ACTIVE=prod \
-              -e DB_URL=${{ secrets.DB_URL }} \
-              -e DB_USER=${{ secrets.DB_USER }} \
-              -e DB_PASS=${{ secrets.DB_PASS }} \
-              -e TOKEN_SECRET=${{ secrets.TOKEN_SECRET }} \
-              -e GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }} \
-              -e SPRING_AI_OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
-              --health-cmd='curl -f http://localhost:8080/actuator/health || exit 1' \
+              -e DB_URL='${{ secrets.DB_URL }}' \
+              -e DB_USER='${{ secrets.DB_USER }}' \
+              -e DB_PASS='${{ secrets.DB_PASS }}' \
+              -e TOKEN_SECRET='${{ secrets.TOKEN_SECRET }}' \
+              -e GEMINI_API_KEY='${{ secrets.GEMINI_API_KEY }}' \
+              -e SPRING_AI_OPENAI_API_KEY='${{ secrets.OPENAI_API_KEY }}' \
+              --health-cmd=\"curl -f http://localhost:8080/actuator/health || exit 1\" \
               --health-interval=30s \
               --health-timeout=10s \
               --health-retries=3 \
               s4rcc/kuarion:latest && \
-            docker system prune -f"
+            docker system prune -f
+          "
 
       - name: Verificar deploy
         run: |
-          ssh -i ~/.ssh/id_ed25519 ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "\
+          ssh -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "
             docker ps | grep kuarion-container && \
             docker inspect --format='{{.State.Health.Status}}' kuarion-container && \
             echo 'Deploy realizado com sucesso!' || \
-            (echo 'Falha no deploy' && exit 1)"
+            (echo 'Falha no deploy' && exit 1)
+          "
