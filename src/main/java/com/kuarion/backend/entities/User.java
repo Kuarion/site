@@ -135,6 +135,10 @@ public Long getId() {
     this.password = password;
   }
   
+  public Long getId() {
+    return this.id;
+  }
+  
   public String getFirstName() {
     return this.firstName;
   }

@@ -16,11 +16,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
 
+import com.kuarion.backend.entities.Enterprise;
+import com.kuarion.backend.entities.User;
 import com.kuarion.backend.service.AuthenticationService;
 import com.kuarion.backend.service.TokenService;
 
 @Component
 public class TokenFilter extends OncePerRequestFilter {
+  private UserDetails username;
   private AuthenticationService authenticationService;
   private TokenService tokenService;
   
@@ -42,6 +45,7 @@ public class TokenFilter extends OncePerRequestFilter {
       var tokenSubject = this.tokenService.validateToken(token);
       // loads an user using authenticationService "loadUserByUsername" method
       var user = this.authenticationService.loadUserByUsername(tokenSubject);
+      this.setUsername(user);
       // create a token to keep the current user authenticated, password (in this case, password is null because user has already been authenticated by AuthenticationController) and its roles
       var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
       // create a new object of SecurityContext from SecurityContextHolder class
@@ -80,5 +84,13 @@ public class TokenFilter extends OncePerRequestFilter {
     }
     // if there's no cookie, return null
     return null;
+  }
+  
+  private void setUsername(UserDetails username) {
+    this.username = username;
+  }
+  
+  public UserDetails getUsername() {
+    return this.username;
   }
 }
