@@ -8,7 +8,7 @@ RUN npm install
 
 # Copiar o restante do código fonte
 COPY src/main/resources/static/kuarion-front-end/ ./
-
+ 
 # Executar o build e mover os arquivos para local padrão do Spring Boot
 RUN npm run build && \
     mkdir -p /app/react-static && \
