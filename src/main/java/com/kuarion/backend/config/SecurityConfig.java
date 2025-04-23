@@ -31,7 +31,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
           .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat").permitAll()
           .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat").permitAll()
-          .requestMatchers(HttpMethod.GET, "/dashboard/**").authenticated()
+          .requestMatchers(HttpMethod.GET, "/dashboard/**", "/info").authenticated()
           .anyRequest().denyAll()
         )
         .logout(logout -> logout
