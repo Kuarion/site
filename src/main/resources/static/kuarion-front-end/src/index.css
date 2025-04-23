@@ -3,11 +3,7 @@
 
 
 /* Base transitions for all elements */
-*, *::before, *::after {
-  transition: background-color 0.5s ease,
-              border-color 0.5s ease,
-              color 0.5s ease;
-}
+
 .content-container {
   height: calc(100vh - 4rem); /* 4rem = h-16 of navbar */
   overflow-y: auto;
@@ -278,4 +274,132 @@ a, button {
 
 .floating {
   animation: float 6s ease-in-out infinite;
+}
+
+/* Add these to your global CSS or index.css file */
+
+/* Custom animations for the landing page */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes morphShape {
+  0%, 100% {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+  25% {
+    border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%;
+  }
+  50% {
+    border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%;
+  }
+  75% {
+    border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%;
+  }
+}
+
+@keyframes scrolldown {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+
+/* Utility classes to apply animations */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.animate-rotate-slow {
+  animation: rotate 20s linear infinite;
+}
+
+.animate-morph {
+  animation: morphShape 15s ease-in-out infinite;
+}
+
+.animate-scrolldown {
+  animation: scrolldown 2s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+/* Custom blend modes for visual effects */
+.blend-difference {
+  mix-blend-mode: difference;
+}
+
+.blend-overlay {
+  mix-blend-mode: overlay;
+}
+
+/* Custom utility classes for transitions */
+.transition-accent {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 500ms;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar but allow scrolling */
+body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* GSAP-friendly classes */
+.gsap-container {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Style for the cursor */
+.custom-cursor {
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  will-change: transform;
+}
+
+.gsap-animated {
+  transition: none !important;
+  transform-origin: center center;
+  will-change: transform, opacity, filter;
 }
