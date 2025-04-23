@@ -50,7 +50,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws
             // Add this line for the dev endpoint
             .requestMatchers(HttpMethod.POST, "/api/dev/**").permitAll()
             // ...existing matchers...
-            .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat/**", "/api/**","/survey/**", "/forum/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat/**", "/survey/**", "/forum/**").permitAll()
             .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat/message", "/survey/**", "/forum/**").permitAll()
             .requestMatchers(HttpMethod.DELETE, "/api/chat/history/delete", "/forum/**").permitAll()
             .requestMatchers(HttpMethod.GET, "/dashboard").authenticated()
