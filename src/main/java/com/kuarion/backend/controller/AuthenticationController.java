@@ -110,7 +110,7 @@ public class AuthenticationController {
         Cookie cookie = this.generateCookie(token);
         // add cookie in HTTP header
         res.addCookie(cookie);
-        return ResponseEntity.status(HttpStatus.OK).body(Map.of("token", token));
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("success", "User authenticated!"));
         
         // important: the AuthenticationManager will not authenticate user itself. It will be a trigger to create cookie and token that will verified by TokenFilter
       } else if (type.equalsIgnoreCase("pj")) {
@@ -121,7 +121,7 @@ public class AuthenticationController {
         Cookie cookie = this.generateCookie(token);
         
         res.addCookie(cookie);
-        return ResponseEntity.status(HttpStatus.OK).body(Map.of("token", token));
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("success", "Enterprise authenticated"));
         
       } else {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "URI not found!"));
