@@ -19,7 +19,7 @@ jobs:
           mkdir -p ~/.ssh
 
           # Adiciona a chave privada do GitHub secret (para acessar o repositório privado)
-          echo "${{ secrets.GITHUB_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          echo "${{ secrets.SSH_GITHUB_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
 
           # Configura o SSH para usar a chave privada e permitir o acesso ao GitHub
