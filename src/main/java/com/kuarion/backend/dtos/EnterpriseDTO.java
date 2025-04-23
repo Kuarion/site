@@ -6,9 +6,21 @@ import com.kuarion.backend.entities.Enterprise;
 import com.kuarion.backend.entities.EnterpriseAnswer;
 
 public class EnterpriseDTO {
+    private Long id;
+    private String username;
+    private String email;
     private String name;
     private String cnpj;
-    private String ownerName; 
+    private String ownerName;
+    
+    public EnterpriseDTO() {}
+  
+    public EnterpriseDTO(Enterprise entity) {
+      this.id = entity.getId();
+      this.name = entity.getName();
+      this.username = entity.getUsername();
+      this.email = entity.getEmail();
+    }
  
     public static EnterpriseDTO fromEntity(Enterprise enterprise) {
         EnterpriseDTO dto = new EnterpriseDTO();
@@ -28,7 +40,4 @@ public class EnterpriseDTO {
     
     public String getOwnerName() { return ownerName; }
     public void setOwnerName(String ownerName) { this.ownerName = ownerName; }
-
-
-    
 }
