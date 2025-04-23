@@ -12,7 +12,7 @@ COPY src/main/resources/static/kuarion-front-end/ ./
 # Executar o build e mover os arquivos para local padrão do Spring Boot
 RUN npm run build && \
     mkdir -p /app/react-static && \
-    mv dist/* /app/react-static/
+    mv dist/* /app/react-static/ 
 
 # Etapa 2: Build do Spring Boot
 FROM maven:3.9.4-eclipse-temurin-21 AS spring-builder
