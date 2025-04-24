@@ -14,7 +14,7 @@ import com.kuarion.backend.model.GeminiResponse;
 public class GeminiService {
     private static final Logger log = LoggerFactory.getLogger(GeminiService.class); // Corrigido para GeminiService
         
-    @Value("${spring.ai.openai.api-key}")
+    @Value("${gemini.api.key}")
     private String geminiApiKey;
     
     @Value("${gemini.api.model}")

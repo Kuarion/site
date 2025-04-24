@@ -31,6 +31,7 @@ public class GeminiController {
     }
     
     @PostMapping("/message")
+    @CrossOrigin(origins = "http://srv802017.hstgr.cloud", allowedHeaders = "*")
     public ResponseEntity<ChatResponse> sendMessage(@RequestBody ChatRequest request) {
         String systemPrompt = "";
     	ChatHistoryResponse chatResponse = chatService.getChatHistory();
@@ -62,6 +63,7 @@ public class GeminiController {
     }
 
     @GetMapping("/history")
+    @CrossOrigin(origins = "http://srv802017.hstgr.cloud", allowedHeaders = "*")
     public ResponseEntity<ChatHistoryResponse> getChatHistory() {
         ChatHistoryResponse history = chatService.getChatHistory();
         return ResponseEntity.ok(history);
