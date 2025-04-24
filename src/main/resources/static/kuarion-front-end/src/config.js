@@ -11,5 +11,7 @@ export const API_ENDPOINTS = {
   survey: '/survey',
   forum: '/forum',
   dashboard: '/dashboard',
-  statistics: '/statistics'
+  statistics: '/statistics',
+  chatMessage: '/api/chat/message',
+  chatHistory: '/api/chat/history'
 };
