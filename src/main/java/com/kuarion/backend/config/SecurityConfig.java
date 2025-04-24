@@ -57,17 +57,21 @@ public class SecurityConfig {
                 "/*.html",
                 "/*.ico",
                 "/*.json",
-                "/*.png"
+                "/*.png",
+                "/*.woff"
             ).permitAll()
                 // Frontend routes
                 .requestMatchers(
-                    "/social",
-                    "/survey",
-                    "/forum",
-                    "/statistics",
-                    "/login",
-                    "/auth"
-                ).permitAll()
+    "/social",
+    "/survey",
+    "/forum",
+    "/statistics",
+    "/login",
+    "/auth",
+    "/landing_page",   // Added leading slash
+    "/",
+    "/landing_page2"   // Added leading slash
+).permitAll()
                 // API endpoints
                 .requestMatchers(HttpMethod.POST, "/api/dev/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/chat/**", "/survey/**", "/forum/**").permitAll()
