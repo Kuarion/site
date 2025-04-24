@@ -29,37 +29,57 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5000", "http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("*"));  // Temporarily allow all origins
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(false);  // Must be false when allowedOrigins has "*"
         configuration.setMaxAge(3600L);
-        
+         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
     @Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-    return httpSecurity
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
-            // Add this line for the dev endpoint
-            .requestMatchers(HttpMethod.POST, "/api/dev/**").permitAll()
-            // ...existing matchers...
-            .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat/**", "/survey/**", "/forum/**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat/message", "/survey/**", "/forum/**").permitAll()
-            .requestMatchers(HttpMethod.DELETE, "/api/chat/history/delete", "/forum/**").permitAll()
-            .requestMatchers(HttpMethod.GET, "/dashboard").authenticated()
-            .requestMatchers(HttpMethod.GET, "/statistics").permitAll()
-            .requestMatchers(HttpMethod.GET, "/", "/login", "/index", "/api/chat").permitAll()
-            .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat").permitAll()
-            .requestMatchers(HttpMethod.GET, "/dashboard/**", "/info").authenticated()
-            .anyRequest().denyAll()
-        )
+            // Static resources from build output
+            .requestMatchers(
+                "/",
+                "/index.html",
+                "/assets/**",  // This covers the bundled JS and CSS
+                "/Kuarion.svg",
+                "/*.js",
+                "/*.css",
+                "/*.html",
+                "/*.ico",
+                "/*.json",
+                "/*.png"
+            ).permitAll()
+                // Frontend routes
+                .requestMatchers(
+                    "/social",
+                    "/survey",
+                    "/forum",
+                    "/statistics",
+                    "/login",
+                    "/auth"
+                ).permitAll()
+                // API endpoints
+                .requestMatchers(HttpMethod.POST, "/api/dev/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/chat/**", "/survey/**", "/forum/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/authentication/**", "/api/chat/message", "/survey/**", "/forum/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/api/chat/history/delete", "/forum/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/dashboard").authenticated()
+                .requestMatchers(HttpMethod.GET, "/statistics").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/chat").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/chat").permitAll()
+                .requestMatchers(HttpMethod.GET, "/dashboard/**", "/info").authenticated()
+                .anyRequest().denyAll()
+            )
             .logout(logout -> logout
                 .logoutUrl("/dashboard/logout")
                 .logoutSuccessUrl("/")

@@ -1,0 +1,81 @@
+name: Deploy para VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login no Docker Hub
+        uses: docker/login-action@v2
+        with:
+          registry: docker.io
+          username: s4rcc
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build e Push da imagem Docker
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            s4rcc/kuarion:latest
+            s4rcc/kuarion:${{ github.sha }}
+          cache-from: type=registry,ref=s4rcc/kuarion:buildcache
+          cache-to: type=registry,ref=s4rcc/kuarion:buildcache,mode=max
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_PRIVATE_KEY }}
+
+      - name: Add known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+          
+      - name: Deploy no VPS
+        run: |
+          ssh -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "
+            docker login -u s4rcc -p ${{ secrets.DOCKER_TOKEN }} &&
+            docker pull s4rcc/kuarion:latest &&
+            docker stop kuarion-container || true &&
+            docker rm kuarion-container || true &&
+            docker run -d \
+              --name kuarion-container \
+              --restart unless-stopped \
+              -p 80:8081 \
+              -e SPRING_PROFILES_ACTIVE=prod \
+              -e DB_URL=\"${{ secrets.DB_URL }}\" \
+              -e DB_USER=\"${{ secrets.DB_USER }}\" \
+              -e DB_PASS=\"${{ secrets.DB_PASS }}\" \
+              -e TOKEN_SECRET=\"${{ secrets.TOKEN_SECRET }}\" \
+              -e GEMINI_API_KEY=\"${{ secrets.GEMINI_API_KEY }}\" \
+              -e GEMINI_API_MODEL=gemini-1.5-pro-latest \
+              -e GEMINI_API_BASE_URL=https://generativelanguage.googleapis.com \
+              -e SPRING_AI_OPENAI_API_KEY=\"${{ secrets.OPENAI_API_KEY }}\" \
+              --health-cmd=\"curl -f http://srv802017.hstgr.cloud/actuator/health || exit 1\" \
+              --health-interval=30s \
+              --health-timeout=10s \
+              --health-retries=3 \
+              s4rcc/kuarion:latest &&
+            docker system prune -f"
+
+      - name: Verificar deploy
+        run: |
+          ssh -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "
+            docker ps | grep kuarion-container &&
+            docker inspect --format='{{.State.Health.Status}}' kuarion-container &&
+            echo 'Deploy realizado com sucesso!' ||
+            (echo 'Falha no deploy' && exit 1)"

@@ -38,7 +38,7 @@ function Post() {
   // Função para buscar posts da comunidade
   const fetchPosts = async () => {
     try {
-      const res = await axios.get(`http://localhost:8081/forum/communities/${communityId}/posts`);
+      const res = await axios.get(`http://srv802017.hstgr.cloud/forum/communities/${communityId}/posts`);
       setPosts(res.data); // Atualiza os posts com os dados recebidos do backend
     } catch (err) {
       console.error('Erro ao buscar posts:', err);
@@ -54,7 +54,7 @@ function Post() {
   // Busca informações da comunidade
   const fetchCommunityDetails = async () => {
     try {
-      const res = await axios.get(`http://localhost:8081/forum/communities/${communityId}`);
+      const res = await axios.get(`http://srv802017.hstgr.cloud/forum/communities/${communityId}`);
       setCommunityName(res.data.name);
     } catch (err) {
       console.error('Erro ao buscar detalhes da comunidade:', err);
@@ -77,7 +77,7 @@ function Post() {
 
     try {
       // Envia os dados para criar um novo post
-      await axios.post(`http://localhost:8081/forum/communities/${communityId}/posts`, {
+      await axios.post(`http://srv802017.hstgr.cloud/forum/communities/${communityId}/posts`, {
         title,
         content,
         author,

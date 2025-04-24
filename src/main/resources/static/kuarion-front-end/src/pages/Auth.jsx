@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useColors } from '../context/ColorContext';
 import axios from 'axios';
 import AnimatedBackground from '../components/AnimatedBackground'; // Add this import
+
+const API_URL = 'http://srv802017.hstgr.cloud';
+
 function Auth() {
   const { colors } = useColors();
   const [isLoginActive, setIsLoginActive] = useState(false);
@@ -22,7 +25,7 @@ function Auth() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:8081/authentication/pf/login', loginData, {
+      const res = await axios.post(`${API_URL}/authentication/pf/login`, loginData, {
         withCredentials: true,
       });
 
@@ -39,7 +42,7 @@ function Auth() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8081/authentication/pf/register', {
+      const response = await fetch(`${API_URL}/authentication/pf/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
