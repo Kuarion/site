@@ -21,12 +21,32 @@ function Social() {
 
 // Update the featuredBlogCardsData array
 const featuredBlogCardsData = [
-  { id: 1, text: 'Lorem Ipsum', image: 'https://th.bing.com/th/id/OIP.pX1GS4M54KeqrK6AJq9J-wHaHa?w=157&h=180&c=7&r=0&o=5&pid=1.7' },
-  { id: 2, text: 'Lorem Ipsum', image: 'https://th.bing.com/th/id/OIP.pX1GS4M54KeqrK6AJq9J-wHaHa?w=157&h=180&c=7&r=0&o=5&pid=1.7' },
-  // Update these paths to include the full public URL
-  { id: 3, text: 'Lorem Ipsum', image: `${import.meta.env.VITE_PUBLIC_URL || ''}/test.png` },
-  { id: 4, text: 'Elaias', image: `${import.meta.env.VITE_PUBLIC_URL || ''}/test.png` },
-  { id: 5, text: 'Elaias', image: `${import.meta.env.VITE_PUBLIC_URL || ''}/test.png` }
+  { 
+    id: 1, 
+    text: 'Lorem Ipsum', 
+    image: 'https://th.bing.com/th/id/OIP.pX1GS4M54KeqrK6AJq9J-wHaHa?w=157&h=180&c=7&r=0&o=5&pid=1.7' 
+  },
+  { 
+    id: 2, 
+    text: 'Lorem Ipsum', 
+    image: 'https://th.bing.com/th/id/OIP.pX1GS4M54KeqrK6AJq9J-wHaHa?w=157&h=180&c=7&r=0&o=5&pid=1.7' 
+  },
+  // For local images, import them directly
+  { 
+    id: 3, 
+    text: 'Lorem Ipsum', 
+    image: new URL('/test.png', import.meta.url).href 
+  },
+  { 
+    id: 4, 
+    text: 'Elaias', 
+    image: new URL('/test.png', import.meta.url).href 
+  },
+  { 
+    id: 5, 
+    text: 'Elaias', 
+    image: new URL('/test.png', import.meta.url).href 
+  }
 ];
 
   return (
