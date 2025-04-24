@@ -2,20 +2,19 @@ package com.kuarion.backend.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.reactive.result.view.RedirectView;
+import org.springframework.web.servlet.view.RedirectView;  // Change this import
 
 @Controller
 public class ContentController {
     
-    
     @GetMapping("/")
-    public RedirectView redirectToLandingPage() {
-        return new RedirectView("/landing_page");
+    public String redirectToLandingPage() {    // Change return type to String
+        return "redirect:/landing_page";       // Use Spring MVC redirect
     }
     
     @GetMapping({"/landing_page", "/social", "/chat", "/survey", 
     "/forum", "/dashboard", "/statistics", "/auth",
-"/login", "/register", "/forgot-password", "/reset-password","/post"})    
+    "/login", "/register", "/forgot-password", "/reset-password","/post"})    
     public String forwardToApp() {
         return "forward:/index.html";
     }
