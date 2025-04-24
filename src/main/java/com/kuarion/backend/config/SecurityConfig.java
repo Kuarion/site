@@ -66,7 +66,10 @@ public class SecurityConfig {
                     "/forum",
                     "/statistics",
                     "/login",
-                    "/auth"
+                    "/auth",
+                    "landing_page",
+                    "/",
+                    "landing_page2"
                 ).permitAll()
                 // API endpoints
                 .requestMatchers(HttpMethod.POST, "/api/dev/**").permitAll()
