@@ -24,8 +24,8 @@ RUN mvn dependency:go-offline -B
 COPY src ./src
 
 # Criar diretório estático e copiar build do React
-RUN mkdir -p src/main/resources/static
-COPY --from=react-builder /app/react-static/ src/main/resources/static/
+RUN mkdir -p src/main/resources/static/kuarion-front-end/dist
+COPY --from=react-builder /app/react-static/ src/main/resources/static/kuarion-front-end/dist/
 
 RUN mvn clean package -DskipTests
 
