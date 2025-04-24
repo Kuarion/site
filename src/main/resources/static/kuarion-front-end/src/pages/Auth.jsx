@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useColors } from '../context/ColorContext';
 import axios from 'axios';
 import AnimatedBackground from '../components/AnimatedBackground'; // Add this import
+
+const API_URL = 'http://srv802017.hstgr.cloud';
+
 function Auth() {
   const { colors } = useColors();
   const [isLoginActive, setIsLoginActive] = useState(false);
