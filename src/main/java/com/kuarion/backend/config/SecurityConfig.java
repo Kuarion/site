@@ -61,16 +61,16 @@ public class SecurityConfig {
             ).permitAll()
                 // Frontend routes
                 .requestMatchers(
-                    "/social",
-                    "/survey",
-                    "/forum",
-                    "/statistics",
-                    "/login",
-                    "/auth",
-                    "landing_page",
-                    "/",
-                    "landing_page2"
-                ).permitAll()
+    "/social",
+    "/survey",
+    "/forum",
+    "/statistics",
+    "/login",
+    "/auth",
+    "/landing_page",   // Added leading slash
+    "/",
+    "/landing_page2"   // Added leading slash
+).permitAll()
                 // API endpoints
                 .requestMatchers(HttpMethod.POST, "/api/dev/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/chat/**", "/survey/**", "/forum/**").permitAll()
