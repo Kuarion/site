@@ -12,7 +12,7 @@ public class ContentController {
         return "redirect:/landing_page";       // Use Spring MVC redirect
     }
     
-    @GetMapping({"/landing_page", "/landing_page2", "/social", "/chat", "/survey", 
+    @GetMapping({"/landing_page", "/landing_page2","/blog", "/social", "/chat", "/survey", 
     "/forum", "/dashboard", "/statistics", "/auth",
     "/login", "/register", "/forgot-password", "/reset-password","/post"})    
     public String forwardToApp() {
