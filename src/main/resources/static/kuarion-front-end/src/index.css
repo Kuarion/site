@@ -8,36 +8,9 @@
   height: calc(100vh - 4rem); /* 4rem = h-16 of navbar */
   overflow-y: auto;
   scrollbar-gutter: stable;
-}
-/* Custom Scrollbar */
-* {
   scrollbar-width: thin;
-  transition: all 0.5s ease;
-  scrollbar-color: var(--accent-color) #0F131F;
-}
-  
-/* Chrome/Edge/Safari */
-::-webkit-scrollbar {
-  width: 8px;
-  z-index: 20; /* Lower than navbar */
-}
-  
-::-webkit-scrollbar-track {
-  background: #0F131F;
-  z-index: 20;
-}
-  
-::-webkit-scrollbar-thumb {
-  background-color: var(--accent-color);
-  border-radius: 4px;
-  transition: background-color 0.5s ease;
-  z-index: 20;
 }
 
-  
-::-webkit-scrollbar-thumb:hover {
-  opacity: 0.8;
-}
 
 /* Specific transitions for interactive elements */
 .transition-accent {
@@ -403,3 +376,33 @@ body::-webkit-scrollbar {
   transform-origin: center center;
   will-change: transform, opacity, filter;
 }
+/* Custom Scrollbar */
+* {
+  scrollbar-width: none;
+  transition: all 0.5s ease;
+  scrollbar-color: var(--accent-color) #0F131F;
+}
+
+/* Chrome/Edge/Safari */
+::-webkit-scrollbar {
+  width: 8px;
+  z-index: 20; /* Lower than navbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #0F131F;
+  z-index: 20;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--accent-color);
+  border-radius: 4px;
+  transition: background-color 0.5s ease;
+  z-index: 20;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  opacity: 0.8;
+}
+
+@font-face {font-family:"CMSans";src:url("CM_Sans_Serif_2012.eot?") format("eot"),url("CM_Sans_Serif_2012.woff") format("woff"),url("assets/CM_Sans_Serif_2012.ttf") format("truetype"),url("assets/CM_Sans_Serif_2012.ttf") format("ttf");font-weight:normal;font-style:normal;}

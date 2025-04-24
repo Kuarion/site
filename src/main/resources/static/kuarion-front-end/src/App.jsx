@@ -12,11 +12,12 @@ import Market from './pages/Marketplace';
 import { ColorProvider } from './context/ColorContext';
 import Layout from './components/Layout';
 import LandingPage from './pages/LandingPage';
-  
+import LandingPage2 from './pages/LandingPage2';
+
 function App() {
   return (
     <Router>
-      <ColorProvider> 
+      <ColorProvider>
         <Layout>
           <Routes>
             <Route path="/" element={<Index />} />
@@ -28,6 +29,7 @@ function App() {
             <Route path="/auth" element={<Auth />} />
             <Route path="/market" element={<Market />} />
             <Route path="/landing_page" element={<LandingPage />} />
+            <Route path="/landing_page_2" element={<LandingPage2 />} />
             <Route path="/forum/communities/:communityId" element={<Post />} />
             <Route path="/forum/communities/:communityId/posts/:postId" element={<PostDetail />} />
           </Routes>

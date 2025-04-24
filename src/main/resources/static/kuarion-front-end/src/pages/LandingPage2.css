@@ -1,0 +1,11 @@
+.background-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* Ensure it's behind the content */
+    background-image: radial-gradient(circle at center, #1A1E2B 0.8px, transparent 0.8px);
+    background-size: 16px 16px; /* Adjust spacing between dots */
+    opacity: 0.75; /* Adjust transparency as needed */
+} 

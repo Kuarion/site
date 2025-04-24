@@ -158,8 +158,8 @@ function Auth() {
   className="absolute top-0 w-1/2 h-full rounded-[2.25rem] z-10"
   style={{ 
     background: isLoginActive 
-      ? `radial-gradient(ellipse at right top, ${colors.green}ed 0%, #151419 47%, #151419 100%)`
-      : `radial-gradient(ellipse at right top, ${colors.blue}ed 0%, #151419 45%, #151419 100%)`,
+      ? `radial-gradient(ellipse at right top, ${colors.green}ed 0%, #0F131F 47%, #090A14 100%)`
+      : `radial-gradient(ellipse at right top, ${colors.blue}ed 0%, #0F131F 45%, #090A14 100%)`,
     boxShadow: '1px 12px 25px rgba(0, 0, 0, 0.78)',
     position: 'absolute',
     left: 0,
@@ -178,8 +178,8 @@ function Auth() {
       borderRadius: '2.25rem',
       border: '0.155rem solid transparent',
       background: isLoginActive
-        ? `linear-gradient(45deg, #232228, #232228, #232228, #232228, ${colors.green}) border-box`
-        : `linear-gradient(45deg, #232228, #232228, #232228, #232228, ${colors.blue}) border-box`,
+        ? `linear-gradient(45deg, #090A14, #090A14, #090A14, #090A14, ${colors.green}) border-box`
+        : `linear-gradient(45deg, #090A14, #090A14, #090A14, #090A14, ${colors.blue}) border-box`,
       WebkitMask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
       WebkitMaskComposite: 'destination-out',
       maskComposite: 'exclude',
