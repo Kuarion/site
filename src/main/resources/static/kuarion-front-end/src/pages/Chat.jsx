@@ -75,7 +75,7 @@ function Chat() {
 
   const fetchHistory = async () => {
     try {
-      const res = await axios.get('http://http://srv802017.hstgr.cloud/api/chat/history', {
+      const res = await axios.get('http://srv802017.hstgr.cloud/api/chat/history', {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -114,7 +114,7 @@ function Chat() {
     }]);
   
     try {
-      const response = await axios.post('http://http://srv802017.hstgr.cloud/api/chat/message', 
+      const response = await axios.post('http://srv802017.hstgr.cloud/api/chat/message', 
         { message: userMessage },
         {
           headers: {

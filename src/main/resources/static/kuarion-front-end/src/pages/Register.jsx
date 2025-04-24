@@ -25,7 +25,7 @@ function Register() {
 
     try {
       // Envia dados para o backend
-      const response = await fetch('http://http://srv802017.hstgr.cloud/authentication/pf/register', {
+      const response = await fetch('http://srv802017.hstgr.cloud/authentication/pf/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

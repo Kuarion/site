@@ -1,6 +1,6 @@
 export const API_URL = process.env.NODE_ENV === 'production' 
   ? 'http://srv802017.hstgr.cloud'  // Try HTTPS
-  : 'http://http://srv802017.hstgr.cloud';
+  : 'http://srv802017.hstgr.cloud';
 
 export const API_ENDPOINTS = {
   login: '/authentication/pf/login',

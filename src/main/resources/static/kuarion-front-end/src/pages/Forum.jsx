@@ -28,7 +28,7 @@ function Forum() {
   // Busca comunidades do fórum
   const fetchCommunities = async () => {
     try {
-      const res = await axios.get('http://http://srv802017.hstgr.cloud/forum/communities');
+      const res = await axios.get('http://srv802017.hstgr.cloud/forum/communities');
       setCommunities(res.data);
     } catch (err) {
       console.error('Erro ao buscar comunidades:', err);
