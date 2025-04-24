@@ -56,7 +56,8 @@ public class SecurityConfig {
                 "/*.css",
                 "/*.html",
                 "/*.ico",
-                "/*.json"
+                "/*.json",
+                "/*.png"
             ).permitAll()
                 // Frontend routes
                 .requestMatchers(
@@ -64,7 +65,8 @@ public class SecurityConfig {
                     "/survey",
                     "/forum",
                     "/statistics",
-                    "/login"
+                    "/login",
+                    "/auth"
                 ).permitAll()
                 // API endpoints
                 .requestMatchers(HttpMethod.POST, "/api/dev/**").permitAll()
