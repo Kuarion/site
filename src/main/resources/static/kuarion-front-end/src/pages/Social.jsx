@@ -19,14 +19,15 @@ function Social() {
     setIsDarkMode(!isDarkMode);
   };
 
-  // Data for the featured blog cards
-  const featuredBlogCardsData = [
-    { id: 1, text: 'Lorem Ipsum', image: 'https://th.bing.com/th/id/OIP.pX1GS4M54KeqrK6AJq9J-wHaHa?w=157&h=180&c=7&r=0&o=5&pid=1.7' },
-    { id: 2, text: 'Lorem Ipsum', image: 'https://th.bing.com/th/id/OIP.pX1GS4M54KeqrK6AJq9J-wHaHa?w=157&h=180&c=7&r=0&o=5&pid=1.7' },
-    { id: 3, text: 'Lorem Ipsum', image: '/test.png' },
-    { id: 4, text: 'Elaias', image: '/test.png' },
-    { id: 5, text: 'Elaias', image: '/test.png' },
-  ];
+// Update the featuredBlogCardsData array
+const featuredBlogCardsData = [
+  { id: 1, text: 'Lorem Ipsum', image: 'https://th.bing.com/th/id/OIP.pX1GS4M54KeqrK6AJq9J-wHaHa?w=157&h=180&c=7&r=0&o=5&pid=1.7' },
+  { id: 2, text: 'Lorem Ipsum', image: 'https://th.bing.com/th/id/OIP.pX1GS4M54KeqrK6AJq9J-wHaHa?w=157&h=180&c=7&r=0&o=5&pid=1.7' },
+  // Update these paths to include the full public URL
+  { id: 3, text: 'Lorem Ipsum', image: `${import.meta.env.VITE_PUBLIC_URL || ''}/test.png` },
+  { id: 4, text: 'Elaias', image: `${import.meta.env.VITE_PUBLIC_URL || ''}/test.png` },
+  { id: 5, text: 'Elaias', image: `${import.meta.env.VITE_PUBLIC_URL || ''}/test.png` }
+];
 
   return (
     <div className="min-h-screen transition-colors duration-700 delay-10" 
