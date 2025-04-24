@@ -10,10 +10,12 @@ public class ContentController {
     
     @GetMapping("/")
     public RedirectView redirectToLandingPage() {
-        return new RedirectView("/landing");
+        return new RedirectView("/landing_page");
     }
     
-    @GetMapping({"/landing", "/social", "/chat", "/survey", "/forum", "/dashboard", "/statistics", "/auth"})    
+    @GetMapping({"/landing_page", "/social", "/chat", "/survey", 
+    "/forum", "/dashboard", "/statistics", "/auth",
+"/login", "/register", "/forgot-password", "/reset-password","/post"})    
     public String forwardToApp() {
         return "forward:/index.html";
     }
