@@ -46,39 +46,32 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
-        .requestMatchers(
-            "/",
-            "/index.html",
-            "/assets/**",
-            "/assets/*.woff",      // Explicit permission for font files
-            "/assets/*.woff2",
-            "/assets/*.ttf",
-            "/assets/*.eot",
-            "/assets/*.svg",
-            "/Kuarion.svg",
-            "/**/*.js",           // Allow JS files in any directory
-            "/**/*.css",          // Allow CSS files in any directory
-            "/**/*.html",
-            "/**/*.ico",
-            "/**/*.json",
-            "/**/*.png",
-            "/**/*.woff"
-        ).permitAll()
-        // Frontend routes - combine all routes in one requestMatchers call
-        .requestMatchers(
-            "/",
-            "/index.html",
-            "/social",
-            "/survey",
-            "/forum",
-            "/statistics",
-            "/login",
-            "/auth",
-            "/landing_page",
-            "/landing_page2",
-            "/dashboard",
-            "/chat"
-        ).permitAll()
+            // Static resources from build output
+            .requestMatchers(
+                "/",
+                "/index.html",
+                "/assets/**",  // This covers the bundled JS and CSS
+                "/Kuarion.svg",
+                "/*.js",
+                "/*.css",
+                "/*.html",
+                "/*.ico",
+                "/*.json",
+                "/*.png",
+                "/*.woff"
+            ).permitAll()
+                // Frontend routes
+                .requestMatchers(
+    "/social",
+    "/survey",
+    "/forum",
+    "/statistics",
+    "/login",
+    "/auth",
+    "/landing_page",   // Added leading slash
+    "/",
+    "/landing_page2"   // Added leading slash
+).permitAll()
                 // API endpoints
                 .requestMatchers(HttpMethod.POST, "/api/dev/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/chat/**", "/survey/**", "/forum/**").permitAll()
