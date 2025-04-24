@@ -57,7 +57,8 @@ public class SecurityConfig {
                 "/*.html",
                 "/*.ico",
                 "/*.json",
-                "/*.png"
+                "/*.png",
+                "/*.woff"
             ).permitAll()
                 // Frontend routes
                 .requestMatchers(
