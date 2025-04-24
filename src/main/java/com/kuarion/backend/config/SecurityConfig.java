@@ -46,32 +46,32 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
-            // Static resources from build output
-            .requestMatchers(
-                "/",
-                "/index.html",
-                "/assets/**",  // This covers the bundled JS and CSS
-                "/Kuarion.svg",
-                "/*.js",
-                "/*.css",
-                "/*.html",
-                "/*.ico",
-                "/*.json",
-                "/*.png",
-                "/*.woff"
-            ).permitAll()
-                // Frontend routes
-                .requestMatchers(
-    "/social",
-    "/survey",
-    "/forum",
-    "/statistics",
-    "/login",
-    "/auth",
-    "/landing_page",   // Added leading slash
-    "/",
-    "/landing_page2"   // Added leading slash
-).permitAll()
+        // Static resources from build output
+        .requestMatchers(
+            "/",
+            "/index.html",
+            "/assets/**",
+            "/Kuarion.svg",
+            "/**/*.js",
+            "/**/*.css",
+            "/**/*.html",
+            "/**/*.ico",
+            "/**/*.json",
+            "/**/*.png",
+            "/**/*.woff"
+        ).permitAll()
+        // Frontend routes
+        .requestMatchers(
+            "/social",
+            "/survey",
+            "/forum",
+            "/statistics",
+            "/login",
+            "/auth",
+            "/landing_page",
+            "/landing_page2"
+        ).permitAll()
+        // ... rest of your configuration
                 // API endpoints
                 .requestMatchers(HttpMethod.POST, "/api/dev/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/chat/**", "/survey/**", "/forum/**").permitAll()
