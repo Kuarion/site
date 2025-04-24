@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { useNavigate } from "react-router-dom";
 import LandingPage2 from "./LandingPage2"; // Assuming LandingPage2.jsx is in the same directory
 
 gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollToPlugin);
 
 // --- Constants (Shapes, Colors) remain the same ---
 const shapes = [
@@ -37,6 +39,12 @@ const LandingPage = () => {
   const fragments = new Array(75).fill(null);
 
   useEffect(() => {
+    gsap.to(window, {
+      duration: 0.1,
+      scrollTo: 0, // or scrollTo: { y: 0, autoKill: true }
+      ease: 'power1.out',
+    });
+
     const continuousAnimations = [];
 
     // Function to create slow ambient movement (unchanged)
@@ -108,6 +116,7 @@ const LandingPage = () => {
     // --- Main GSAP Timeline ---
     const tl = gsap.timeline({
       scrollTrigger: {
+        
         trigger: sectionRef.current,
         start: "center center",
         end: "+=200%",
@@ -208,6 +217,7 @@ const LandingPage = () => {
       scrub: -2,
       strokeWidth: 0.1,
       ease: "none",
+      
     }, "portalExpand");
 
     // Cleanup function

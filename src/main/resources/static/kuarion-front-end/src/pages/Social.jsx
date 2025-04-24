@@ -23,29 +23,29 @@ function Social() {
 const featuredBlogCardsData = [
   { 
     id: 1, 
-    text: 'Lorem Ipsum', 
-    image: 'https://th.bing.com/th/id/OIP.pX1GS4M54KeqrK6AJq9J-wHaHa?w=157&h=180&c=7&r=0&o=5&pid=1.7' 
+    text: 'O que é energia solar?', 
+    image: 'https://manualdomundo.com.br/images/manual-do-mundo-1200-600.jpg' 
   },
   { 
     id: 2, 
-    text: 'Lorem Ipsum', 
-    image: 'https://th.bing.com/th/id/OIP.pX1GS4M54KeqrK6AJq9J-wHaHa?w=157&h=180&c=7&r=0&o=5&pid=1.7' 
+    text: 'O que são paineis solares!', 
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeBg9XAsOGypFHoeyMm_bXYp0Ew6kFq9UMMw&s' 
   },
   // For local images, import them directly
   { 
     id: 3, 
-    text: 'Lorem Ipsum', 
-    image: new URL('/test.png', import.meta.url).href 
+    text: 'Saiba como escolher uma empresa para sua cara!', 
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhOzmtPmLdOsPa5KRcWdg4cVT6SkoHozi2KQ&s' 
   },
   { 
     id: 4, 
-    text: 'Elaias', 
-    image: new URL('/test.png', import.meta.url).href 
+    text: 'Novas 5 tecnologias sustentáveis desse ano!', 
+    image: 'https://orizonvr.com.br/novo_site/wp-content/uploads/2023/03/Alinhando-tecnologia-e-sustentabilidade-1024x429.jpg' 
   },
   { 
     id: 5, 
-    text: 'Elaias', 
-    image: new URL('/test.png', import.meta.url).href 
+    text: 'Kuarion ganha o HACKATHON!', 
+    image: 'https://static.vecteezy.com/system/resources/previews/047/656/894/non_2x/group-of-business-people-celebrating-on-white-background-free-png.png' 
   }
 ];
 
@@ -136,22 +136,22 @@ const featuredBlogCardsData = [
               <div className="space-y-2 md:space-y-3">
                 <div className="p-2 md:p-3 rounded-md flex items-center transition duration-300 delay-290" style={{ backgroundColor: colors.postBackground }}>
                   <span className="px-2 md:px-3 py-1 text-xs font-bold rounded mr-2 md:mr-3 whitespace-nowrap " style={{ backgroundColor: colors.purple, color: colors.darkPurpleText }}>k/novos</span>
-                  <p className="text-xs md:text-sm truncate flex-1 duration-300 delay-210" style={{ color: isDarkMode ? colors.headerText : colors.bodyText }}>Post irado demaisssss!</p>
+                  <p className="text-xs md:text-sm truncate flex-1 duration-300 delay-210" style={{ color: isDarkMode ? colors.headerText : colors.bodyText }}>Qual é a melhor função da Kuarion?</p>
                 </div>
                 <div className="p-2 md:p-3 rounded-md flex items-center transition duration-300 delay-270" style={{ backgroundColor: colors.postBackground }}>
                   <span className="px-2 md:px-3 py-1 text-xs font-bold rounded mr-2 md:mr-3 whitespace-nowrap" style={{ backgroundColor: colors.green, color: colors.darkGreenText }}>k/rural</span>
-                  <p className="text-xs md:text-sm truncate flex-1 duration-300 delay-210" style={{ color: isDarkMode ? colors.headerText : colors.bodyText }}>Post irado demaisssss!</p>
+                  <p className="text-xs md:text-sm truncate flex-1 duration-300 delay-210" style={{ color: isDarkMode ? colors.headerText : colors.bodyText }}>Olhem a instalação que eu fiz!</p>
                 </div>
                 <div className="p-2 md:p-3 rounded-md flex items-center transition duration-300 delay-250" style={{ backgroundColor: colors.postBackground }}>
-                  <span className="px-2 md:px-3 py-1 text-xs font-bold rounded mr-2 md:mr-3 whitespace-nowrap" style={{ backgroundColor: colors.blue, color: colors.darkBlueText }}>k/industr...</span>
-                  <p className="text-xs md:text-sm truncate flex-1 duration-300 delay-210" style={{ color: isDarkMode ? colors.headerText : colors.bodyText }}>Post irado demaisssss!</p>
+                  <span className="px-2 md:px-3 py-1 text-xs font-bold rounded mr-2 md:mr-3 whitespace-nowrap" style={{ backgroundColor: colors.blue, color: colors.darkBlueText }}>k/industrial</span>
+                  <p className="text-xs md:text-sm truncate flex-1 duration-300 delay-210" style={{ color: isDarkMode ? colors.headerText : colors.bodyText }}>Trabalhando com várias empresas.</p>
                 </div>
                 <div className="p-2 md:p-3 rounded-md flex items-center transition duration-300 delay-230" style={{ backgroundColor: colors.postBackground }}>
-                  <span className="px-2 md:px-3 py-1 text-xs font-bold rounded mr-2 md:mr-3 whitespace-nowrap" style={{ backgroundColor: colors.blue, color: colors.darkBlueText }}>k/industr...</span>
-                  <p className="text-xs md:text-sm truncate flex-1 duration-300 delay-210" style={{ color: isDarkMode ? colors.headerText : colors.bodyText }}>Post irado demaisssss!</p>
+                  <span className="px-2 md:px-3 py-1 text-xs font-bold rounded mr-2 md:mr-3 whitespace-nowrap" style={{ backgroundColor: colors.yellow, color: colors.darkYellowText }}>k/discutindo</span>
+                  <p className="text-xs md:text-sm truncate flex-1 duration-300 delay-210" style={{ color: isDarkMode ? colors.headerText : colors.bodyText }}>k/discutindo, o que vocês acham do novo influx de empresas?</p>
                 </div>
                 <div className="p-2 md:p-3 rounded-md flex items-center transition duration-300 delay-210" style={{ backgroundColor: colors.postBackground }}>
-                  <span className="px-2 md:px-3 py-1 text-xs font-bold rounded mr-2 md:mr-3 whitespace-nowrap" style={{ backgroundColor: colors.blue, color: colors.darkBlueText }}>k/industr...</span>
+                  <span className="px-2 md:px-3 py-1 text-xs font-bold rounded mr-2 md:mr-3 whitespace-nowrap" style={{ backgroundColor: colors.blue, color: colors.darkBlueText }}>k/rural</span>
                   <p className="text-xs md:text-sm truncate flex-1 duration-300 delay-210" style={{ color: isDarkMode ? colors.headerText : colors.bodyText }}>Post irado demaisssss!</p>
                 </div>
               </div>

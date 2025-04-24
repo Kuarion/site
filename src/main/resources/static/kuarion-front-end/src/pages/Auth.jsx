@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import { useColors } from '../context/ColorContext';
 import axios from 'axios';
 import AnimatedBackground from '../components/AnimatedBackground'; // Add this import
+import Social from "./Social"; // Assuming LandingPage2.jsx is in the same directory
+import { useNavigate } from 'react-router-dom';
 
 const API_URL = 'http://srv802017.hstgr.cloud';
 
 function Auth() {
+  const navigate = useNavigate();
+
+  
   const { colors } = useColors();
   const [isLoginActive, setIsLoginActive] = useState(false);
   
@@ -146,12 +151,13 @@ function Auth() {
                   onChange={(e) => setLoginData({...loginData, password: e.target.value})}
                 />
                 <button
-                  type="submit"
-                  className="w-full p-3 rounded-lg font-semibold transition-all duration-300 hover:opacity-90"
-                  style={{ backgroundColor: colors.accentColor, color: colors.whiteMain }}
-                >
-                  Entrar
-                </button>
+      type="button"
+      onClick={() => navigate('/social')}
+      className="w-full p-3 rounded-lg font-semibold transition-all duration-300 hover:opacity-90"
+      style={{ backgroundColor: colors.accentColor, color: colors.whiteMain }}
+    >
+      Entrar
+    </button>
               </form>
             </div>
           </div>
@@ -204,7 +210,7 @@ function Auth() {
           className="px-8 py-3 rounded-full border-2 font-semibold transition-all duration-300 hover:bg-[#01B171] animate-fadeSlideUp [animation-delay:250ms]"
           style={{ color: '#fff', borderColor: '#fff' }}
         >
-          Registrar
+          Signup
         </button>
       </>
     ) : (
@@ -220,7 +226,7 @@ function Auth() {
           className="px-8 py-3 rounded-full border-2 font-semibold transition-all duration-300 hover:bg-[#425BE9] animate-fadeSlideUp [animation-delay:250ms]"
           style={{ color: '#fff', borderColor: '#fff' }}
         >
-          Entrar
+          Login
         </button>
       </>
     )}

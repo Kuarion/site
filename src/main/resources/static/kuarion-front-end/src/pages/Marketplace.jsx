@@ -7,20 +7,20 @@ function Marketplace() {
   
   // Data for the marketplace - MOVED TO TOP
   const companyData = [
-    { id: 1, name: 'Empresa Solar Eco', logo: '/test.png', rating: 4.7, products: 42 },
-    { id: 2, name: 'SunTech Solutions', logo: '/test.png', rating: 4.5, products: 38 },
-    { id: 3, name: 'Energia Verde', logo: '/test.png', rating: 4.9, products: 56 },
-    { id: 4, name: 'Painéis Solares Brasil', logo: '/test.png', rating: 4.3, products: 27 },
-    { id: 5, name: 'EcoSolar Distribuidora', logo: '/test.png', rating: 4.8, products: 64 },
+    { id: 1, name: 'Empresa Solar Eco', logo: 'https://media.istockphoto.com/id/1158571608/vector/solar-panel-logo-vector.jpg?s=612x612&w=0&k=20&c=0LwgOEX9CathKI8GDyFnmQOvTo5DisNvdeV1JjyVCTA=', rating: 4.7, products: 42 },
+    { id: 2, name: 'SunTech Solutions', logo: 'https://static.vecteezy.com/system/resources/previews/004/603/370/non_2x/care-solar-logo-template-creative-solar-panel-energy-logo-design-concepts-vector.jpg', rating: 4.5, products: 38 },
+    { id: 3, name: 'Energia Verde', logo: 'https://thumbs.dreamstime.com/b/sun-solar-energy-logo-design-template-solar-tech-logo-designs-sun-solar-energy-logo-design-template-solar-tech-logo-design-136012960.jpg', rating: 4.9, products: 56 },
+    { id: 4, name: 'Painéis Solares Brasil', logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1ieqJr-SShF5f5W_p6IiFzk24Cp0MG3CdBg&s', rating: 4.3, products: 27 },
+    { id: 5, name: 'EcoSolar Distribuidora', logo: 'https://static.vecteezy.com/ti/vetor-gratis/t2/7619648-verde-painel-solar-energia-eletrica-eletricidade-e-folha-energia-design-modelo-gratis-vetor.jpg', rating: 4.8, products: 64 },
   ];
 
   const featuredProducts = [
-    { id: 1, name: 'Painel Solar 450W', price: 'R$ 1.299,00', image: '/test.png', discount: '15%', company: 'Empresa Solar Eco' },
-    { id: 2, name: 'Inversor 3000W', price: 'R$ 2.499,00', image: '/test.png', discount: '10%', company: 'SunTech Solutions' },
-    { id: 3, name: 'Kit Solar Residencial', price: 'R$ 7.899,00', image: '/test.png', discount: '20%', company: 'Energia Verde' },
-    { id: 4, name: 'Bateria 200Ah', price: 'R$ 3.199,00', image: '/test.png', discount: '5%', company: 'Painéis Solares Brasil' },
-    { id: 5, name: 'Controlador de Carga MPPT', price: 'R$ 899,00', image: '/test.png', discount: '12%', company: 'EcoSolar Distribuidora' },
-    { id: 6, name: 'Cabo Solar 6mm', price: 'R$ 399,00', image: '/test.png', company: 'Empresa Solar Eco' },
+    { id: 1, name: 'Painel Solar 450W', price: 'R$ 1.299,00', image: 'https://cdn.vectorstock.com/i/500p/29/34/a-photovoltaic-mono-crystalline-solar-panel-vector-50542934.jpg', discount: '15%', company: 'Empresa Solar Eco' },
+    { id: 2, name: 'Inversor 3000W', price: 'R$ 2.499,00', image: 'https://http2.mlstatic.com/D_NQ_NP_661455-MLU69994446498_062023-O.webp ', discount: '10%', company: 'SunTech Solutions' },
+    { id: 3, name: 'Kit Solar Residencial', price: 'R$ 7.899,00', image: 'https://www.aeliussolar.com.br/media/catalog/product/cache/1/image/1000x/9df78eab33525d08d6e5fb8d27136e95/1/0/10-5k.jpg', discount: '20%', company: 'Energia Verde' },
+    { id: 4, name: 'Bateria 200Ah', price: 'R$ 3.199,00', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKi46Fy_8ip5JRwCv7BqDerktITmrxAJ1w_g&s', discount: '5%', company: 'Painéis Solares Brasil' },
+    { id: 5, name: 'Controlador de Carga MPPT', price: 'R$ 899,00', image: 'https://images.tcdn.com.br/img/img_prod/404854/controlador_de_carga_solar_10a_12v_24v_com_timer_programavel_12_1_f58a4b206621a3f0c185bbcca456aff3.png', discount: '12%', company: 'EcoSolar Distribuidora' },
+    { id: 6, name: 'Cabo Solar 6mm', price: 'R$ 399,00', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdylfNzeuzF_-Oal99VrG6jMUmrCdZIRLeKg&s', company: 'Empresa Solar Eco' },
   ];
 
   const categoryButtons = [

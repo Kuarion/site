@@ -3,9 +3,12 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
 import { useColors } from "../context/ColorContext";
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+
 import './LandingPage2.css'; // Import your CSS file for styles
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollToPlugin);
 
 // Shapes for particles (Mantido)
 const shapes = [
@@ -83,13 +86,19 @@ const LandingPage2 = () => {
     "Seja bem-vindo à comunidade que está transformando o futuro da energia no Brasil.", // Descrição para "Junte-se a nós."
     "Dê o primeiro passo rumo à inovação e sustentabilidade no setor de energia solar." // Descrição para "Comece agora."
   ];
-
+ 
+  
   useEffect(() => {
     // Main entrance animation (Mantido)
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  
+    
+
     const tl = gsap.timeline();
 
     tl.fromTo(pageRef.current, {
       opacity: 0,
+      
     }, {
       opacity: 1,
       duration: 0.5,
@@ -219,6 +228,7 @@ const LandingPage2 = () => {
   }, []); // Empty dependency array means this runs once on mount
 
   return (
+    
     // Added bg-[#090A14] class here to set the base background color
     <div ref={pageRef} className="min-h-screen overflow-x-hidden bg-[#090A14]">
       {/* Background Grid - This will now be the main background for all sections */}
@@ -556,7 +566,7 @@ const LandingPage2 = () => {
                                </div>
                                 <div className="flex items-start gap-3">
                                    <div className="w-6 h-6 rounded-full mt-1 flex items-center justify-center" style={{ backgroundColor: colors.yellow }}>
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 20L16 4" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinecap="round"/><path d="M16 20L8 4" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinecap="round"/></svg>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 20L16 4" stroke="black" strokeWidth="3" strokeLinecap="round" /><path d="M16 20L8 4" stroke="black" strokeWidth="3" strokeLinecap="round" /></svg>
                                    </div>
                                    <p className="text-lg text-white opacity-90">Otimize a comunicação e a colaboração da sua equipe</p>
                                </div>
@@ -575,13 +585,13 @@ const LandingPage2 = () => {
                                 </div>
                                 <div className="flex items-start gap-3">
                                     <div className="w-6 h-6 rounded-full mt-1 flex items-center justify-center" style={{ backgroundColor: colors.yellow }}>
-                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinecap="round"/><path d="M12 6V18M6 12H18" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinecap="round"/></svg>
+                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="black" strokeWidth="3" strokeLinecap="round"/><path d="M12 6V18M6 12H18" stroke="black" strokeWidth="3" strokeLinecap="round" /></svg>
                                     </div>
                                     <p className="text-lg text-white opacity-90">Melhore a experiência do cliente com processos claros</p>
                                 </div>
                                  <div className="flex items-start gap-3">
                                     <div className="w-6 h-6 rounded-full mt-1 flex items-center justify-center" style={{ backgroundColor: colors.yellow }}>
-                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinecap="round"/><path d="M12 6V18M6 12H18" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinecap="round"/></svg>
+                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="black" strokeWidth="3" strokeLinecap="round"/><path d="M12 6V18M6 12H18" stroke="black" strokeWidth="3" strokeLinecap="round" /></svg>
                                     </div>
                                     <p className="text-lg text-white opacity-90">Aumente sua produtividade e lucratividade</p>
                                 </div>
@@ -621,7 +631,7 @@ const LandingPage2 = () => {
                             {/* Advantage Card 3 */}
                             <div className="content-item rounded-xl overflow-hidden bg-opacity-20 p-6 w-full" style={{ backgroundColor: `${colors.purple}33` }}> {/* Added w-full */}
                                 <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: colors.purple }}>
-                                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M12 8V16M8 12H16" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinecap="round"/></svg>
+                                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M12 8V16M8 12H16" stroke="white" strokeWidth="2" strokeLinecap="round" /></svg>
                                 </div>
                                 <h3 className="text-xl font-bold mb-3 text-white">Suporte Especializado</h3>
                                 <p className="text-white opacity-90">
