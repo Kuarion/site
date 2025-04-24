@@ -32,7 +32,7 @@ function PostDetail() {
 
   const fetchDetails = async () => {
     try {
-      const res = await axios.get(`http://localhost:8081/forum/communities/${communityId}/posts/${postId}`);
+      const res = await axios.get(`http://http://srv802017.hstgr.cloud/forum/communities/${communityId}/posts/${postId}`);
       setPost(res.data.post);
       setComments(res.data.comments || []);
     } catch (err) {
@@ -67,7 +67,7 @@ function PostDetail() {
 
   const fetchCommunityDetails = async () => {
     try {
-      const res = await axios.get(`http://localhost:8081/forum/communities/${communityId}`);
+      const res = await axios.get(`http://http://srv802017.hstgr.cloud/forum/communities/${communityId}`);
       setCommunityName(res.data.name);
     } catch (err) {
       console.error('Erro ao buscar detalhes da comunidade:', err);
@@ -97,7 +97,7 @@ function PostDetail() {
   
     try {
       await axios.post(
-        `http://localhost:8081/forum/communities/${communityId}/posts/${postId}/add-comment`,
+        `http://http://srv802017.hstgr.cloud/forum/communities/${communityId}/posts/${postId}/add-comment`,
         {
           author: username,
           message,

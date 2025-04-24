@@ -65,7 +65,7 @@ jobs:
               -e GEMINI_API_MODEL=gemini-1.5-pro-latest \
               -e GEMINI_API_BASE_URL=https://generativelanguage.googleapis.com \
               -e SPRING_AI_OPENAI_API_KEY=\"${{ secrets.OPENAI_API_KEY }}\" \
-              --health-cmd=\"curl -f http://localhost:8081/actuator/health || exit 1\" \
+              --health-cmd=\"curl -f http://http://srv802017.hstgr.cloud/actuator/health || exit 1\" \
               --health-interval=30s \
               --health-timeout=10s \
               --health-retries=3 \
