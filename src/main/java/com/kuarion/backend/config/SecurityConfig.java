@@ -29,21 +29,16 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(
-            "http://localhost:5000", 
-            "http://localhost:3000",
-            "http://srv802017.hstgr.cloud"
-        ));
+        configuration.setAllowedOrigins(Arrays.asList("*"));  // Temporarily allow all origins
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(false);  // Must be false when allowedOrigins has "*"
         configuration.setMaxAge(3600L);
-        
+         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -63,11 +58,6 @@ public class SecurityConfig {
                 "/*.ico",
                 "/*.json"
             ).permitAll()
-
-            .requestMatchers("/api/chat/**").permitAll()
-            .requestMatchers("/api/chat/message").permitAll()
-            .requestMatchers("/api/chat/history").permitAll()
-
                 // Frontend routes
                 .requestMatchers(
                     "/social",
