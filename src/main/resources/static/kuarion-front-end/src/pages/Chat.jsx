@@ -1,3 +1,7 @@
+// At the top of your file
+const BASE_URL = window.location.protocol + '//' + window.location.hostname;
+
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { marked } from 'marked';
@@ -75,7 +79,7 @@ function Chat() {
 
   const fetchHistory = async () => {
     try {
-      const res = await axios.get('http://srv802017.hstgr.cloud/api/chat/history', {
+      const res = await axios.get(`${BASE_URL}/api/chat/history`, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -114,7 +118,7 @@ function Chat() {
     }]);
   
     try {
-      const response = await axios.post('http://srv802017.hstgr.cloud/api/chat/message', 
+      const response = await axios.post(`${BASE_URL}/api/chat/message`, 
         { message: userMessage },
         {
           headers: {
