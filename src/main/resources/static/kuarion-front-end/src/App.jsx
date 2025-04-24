@@ -20,7 +20,7 @@ function App() {
       <ColorProvider>
         <Layout>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<LandingPage />} />
             <Route path="/social" element={<Social />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/register" element={<Register />} />
