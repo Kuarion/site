@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ContentController {
     
-    @GetMapping("/social")
+    @GetMapping({"/", "/social", "/survey", "/forum", "/dashboard", "/statistics"})    
     public String social() {
         return "forward:/index.html";
     }
