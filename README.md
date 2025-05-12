@@ -1,3 +1,2 @@
 http://srv802017.hstgr.cloud/
-
-scroll the mouse to acces the website
+Role para baixo para acessar nosso site!
