@@ -12,6 +12,9 @@ import Market from './pages/Marketplace';
 import { ColorProvider } from './context/ColorContext';
 import Layout from './components/Layout';
 import LandingPage from './pages/LandingPage';
+import Config from './pages/Config';
+import Devs from './pages/Devs';
+import Account from './pages/Account';
 import LandingPage2 from './pages/LandingPage2';
 
 function App() {
@@ -28,6 +31,9 @@ function App() {
             <Route path="/forum" element={<Forum />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/market" element={<Market />} />
+            <Route path="/config" element={<Config />} />
+            <Route path="/account" element={<Account />} />
+            <Route path="/devs" element={<Devs />} />
             <Route path="/landing_page" element={<LandingPage />} />
             <Route path="/landing_page_2" element={<LandingPage2 />} />
             <Route path="/forum/communities/:communityId" element={<Post />} />

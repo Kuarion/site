@@ -376,11 +376,7 @@ const LandingPage2 = () => {
                              style={{ border: `3px solid ${colors.blue}` }}
                            >
                              <img
-<<<<<<< HEAD
-                               src="/api/placeholder/600/400" // Replace with actual image
-=======
-                               src="https://media.istockphoto.com/id/497709519/photo/sunbean-of-sunset-sky.jpg?s=612x612&w=0&k=20&c=MGBivlMjj4tx7rfl5Yo69QTeRm13V_JNnjhx4lJL36o=" // Replace with actual image
->>>>>>> f8f543a9c708898ba316f6c78d97ab7b84547662
+                               src="https://media.istockphoto.com/id/497709519/photo/sunbean-of-sunset-sky.jpg?s=612x612&w=0&k=20&c=MGBivlMjj4tx7rfl5Yo69QTeRm13V_JNnjhx4lJL36o=" 
                                alt="Nosso propósito"
                                className="w-full h-full object-cover"
                              />
@@ -498,11 +494,7 @@ const LandingPage2 = () => {
                            </div>
                             <div className="content-item rounded-xl overflow-hidden shadow-2xl h-full w-full" style={{ border: `3px solid ${colors.purple}` }}> {/* Added w-full */}
                               <img
-<<<<<<< HEAD
-                                src="/api/placeholder/600/400" // Replace with actual image
-=======
                                 src="https://media.discordapp.net/attachments/1359990326701330693/1365022046291103926/image.png?ex=680bcb58&is=680a79d8&hm=1a9454b6501ba11c1b659eb24824e6a03a1d60b091938cc213765860b896698e&=&format=webp&quality=lossless&width=982&height=552" // Replace with actual image
->>>>>>> f8f543a9c708898ba316f6c78d97ab7b84547662
                                 alt="Marketplace Kuarion"
                                 className="w-full h-full object-cover"
                               />
@@ -553,11 +545,7 @@ const LandingPage2 = () => {
                                style={{ border: `3px solid ${colors.green}` }}
                              >
                                <img
-<<<<<<< HEAD
-                                 src="/api/placeholder/600/400" // Replace with actual image showing connections
-=======
                                  src="https://cdn.sanity.io/images/z7wg6mcy/production/b89b9ef48c96e84841c07411c863ab600f833e60-1661x1049.png" // Replace with actual image showing connections
->>>>>>> f8f543a9c708898ba316f6c78d97ab7b84547662
                                  alt="Sistema Integrado"
                                  className="w-full h-full object-cover"
                                />
@@ -610,11 +598,7 @@ const LandingPage2 = () => {
                             </div>
                              <div className="content-item rounded-xl overflow-hidden shadow-2xl h-full w-full" style={{ border: `3px solid ${colors.blue}` }}> {/* Added w-full */}
                                <img
-<<<<<<< HEAD
-                                 src="/api/placeholder/600/400" // Replace with image showing transformation/efficiency
-=======
                                  src="https://sustainablereview.com//wp-content/uploads/2023/05/a2-1024x880.png" // Replace with image showing transformation/efficiency
->>>>>>> f8f543a9c708898ba316f6c78d97ab7b84547662
                                  alt="Transformação do Workflow"
                                  className="w-full h-full object-cover"
                                />
@@ -660,11 +644,7 @@ const LandingPage2 = () => {
                         // Section 10 Content
                         <div className="content-item mt-16 w-full"> {/* Added w-full */}
                             <img
-<<<<<<< HEAD
-                               src="/api/placeholder/800/500" // Replace with compelling image/visual
-=======
                                src="https://images.stockcake.com/public/7/9/0/79041c55-e32d-4368-a928-f55d6094ed57_large/joyful-sunset-smile-stockcake.jpg" // Replace with compelling image/visual
->>>>>>> f8f543a9c708898ba316f6c78d97ab7b84547662
                                alt="Junte-se a nós"
                                className="rounded-xl mx-auto shadow-2xl w-full h-auto" // Adjusted to w-full h-auto and mx-auto
                                style={{ border: `3px solid ${colors.green}`, maxWidth: '800px' }}
