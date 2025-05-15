@@ -14,7 +14,11 @@ import com.kuarion.backend.model.GeminiResponse;
 public class GeminiService {
     private static final Logger log = LoggerFactory.getLogger(GeminiService.class); // Corrigido para GeminiService
         
+<<<<<<< HEAD
     @Value("${gemini.api.key}")
+=======
+   @Value("${gemini.api.key}")
+>>>>>>> f8f543a9c708898ba316f6c78d97ab7b84547662
     private String geminiApiKey;
     
     @Value("${gemini.api.model}")
