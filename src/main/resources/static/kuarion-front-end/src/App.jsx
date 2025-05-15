@@ -16,6 +16,7 @@ import Config from './pages/Config';
 import Devs from './pages/Devs';
 import Account from './pages/Account';
 import LandingPage2 from './pages/LandingPage2';
+import Blog from './pages/Blog';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/market" element={<Market />} />
             <Route path="/config" element={<Config />} />
             <Route path="/account" element={<Account />} />
+            <Route path="/blog" element={<Blog />} />
             <Route path="/devs" element={<Devs />} />
             <Route path="/landing_page" element={<LandingPage />} />
             <Route path="/landing_page_2" element={<LandingPage2 />} />

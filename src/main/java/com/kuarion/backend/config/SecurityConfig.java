@@ -70,12 +70,8 @@ public class SecurityConfig {
     "/auth",
     "/landing_page",   // Added leading slash
     "/",
-<<<<<<< HEAD
-    "/landing_page2"   // Added leading slash
-=======
     "/landing_page2",
     "/blog"  // Added leading slash
->>>>>>> f8f543a9c708898ba316f6c78d97ab7b84547662
 ).permitAll()
                 // API endpoints
                 .requestMatchers(HttpMethod.POST, "/api/dev/**").permitAll()

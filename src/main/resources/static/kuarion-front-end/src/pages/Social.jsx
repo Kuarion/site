@@ -66,62 +66,63 @@ const featuredBlogCardsData = [
 
 
         {/* Content Area - adjusted for better responsive layout */}
-  <main className="pt-4 px-8"> {/* Changed from p-8 to pt-4 px-8 */}
+<main className="pt-4 px-8"> {/* Changed from p-8 to pt-4 px-8 */}
 
-  {/* Then reduce the section margin */}
-  <section className="relative mb-6"> {/* Removed md:mb-8 lg:mb-12 */}
-    {/* And reduce the blue container's top padding */}
-    <div className="rounded-xl md:rounded-2xl lg:rounded-3xl pt-4 pb-15 md:pt-4 md:pb-25 lg:pt-4 lg:pb-45 px-3 md:px-4 lg:px-6 mx-2 md:mx-4 text-white" 
-  style={{ backgroundColor: colors.purple }}>
-  <div className="max-w-6xl mx-0">
-    <div className="pl-4 mt-5 md:pl-6"> {/* Removed pt-2 */}
-    <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-1 transition-colors duration-500 delay-200"
-    style={{ color: colors.whiteMain }}>
-        BLOGS DESTACADOS
-      </h2>
-      <p className="text-sm md:text-base lg:text-xl mb-2 opacity-90"> {/* Reduced margin bottom */}
-        Explore nossos Blogs, aprenda sobre energia solar!
-      </p>
-      <button className="font-bold py-1 md:py-2 px-3 md:px-6 rounded-md text-xs md:text-sm hover:opacity-90 transition duration-300 mt-15"
-  style={{ backgroundColor: colors.green, color: colors.darkGreenText }}>
-  ver mais
+{/* Then reduce the section margin */}
+<section className="relative mb-6"> {/* Removed md:mb-8 lg:mb-12 */}
+  {/* And reduce the blue container's top padding */}
+  <div className="rounded-xl md:rounded-2xl lg:rounded-3xl pt-4 pb-15 md:pt-4 md:pb-25 lg:pt-4 lg:pb-45 px-3 md:px-4 lg:px-6 mx-2 md:mx-4 text-white" 
+style={{ backgroundColor: colors.purple }}>
+<div className="max-w-6xl mx-0">
+  <div className="pl-4 mt-5 md:pl-6"> {/* Removed pt-2 */}
+  <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-1 transition-colors duration-500 delay-200"
+  style={{ color: colors.whiteMain }}>
+      BLOGS DESTACADOS
+    </h2>
+    <p className="text-sm md:text-base lg:text-xl mb-2 opacity-90"> {/* Reduced margin bottom */}
+      Explore nossos Blogs, aprenda sobre energia solar!
+    </p>
+    <button className="font-bold py-1 md:py-2 px-3 md:px-6 rounded-md text-xs md:text-sm hover:opacity-90 transition duration-300 mt-15"
+style={{ backgroundColor: colors.green, color: colors.darkGreenText }}>
+ver mais
 </button>
-    </div>
   </div>
 </div>
+</div>
 
-            {/* Blog cards container - responsive grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-4 lg:gap-5 -mt-25 md:-mt-32 lg:-mt-40 relative z-10 px-4 md:px-6 lg:px-8 mx-2 md:mx-4">
-              {/* Map over cards data with responsive styling */}
-              {featuredBlogCardsData.map((card) => (
-  <div
-    key={card.id}
-    className="rounded-lg md:rounded-xl shadow-md md:shadow-lg overflow-hidden h-full transform hover:scale-105 transition duration-300 delay-300 border-4 md:border-6 lg:border-8"
-    style={{
-      backgroundColor: colors.black,
-      borderColor: isDarkMode ? colors.black : colors.black, // Dynamic border color
-    }}
-  >
-    <div className="h-24 md:h-32 lg:h-40 overflow-hidden">
-      <img
-        src={card.image || "/test.png"}
-        alt={`Blog post about ${card.text}`}
-        className="w-full h-full object-cover rounded-lg md:rounded-xl"
-      />
-    </div>
-    <div className="p-2 md:p-3 lg:p-4">
-    <p 
-        className="text-sm md:text-base lg:text-lg font-semibold"
-        style={{ color: colors.headerText }}
-      >
-        {card.text}
-      </p>
-    </div>
+          {/* Blog cards container - responsive grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-4 lg:gap-5 -mt-25 md:-mt-32 lg:-mt-40 relative z-10 px-4 md:px-6 lg:px-8 mx-2 md:mx-4">
+            {/* Map over cards data with responsive styling */}
+            {featuredBlogCardsData.map((card) => (
+<div
+  key={card.id}
+  className="rounded-lg md:rounded-xl shadow-md md:shadow-lg overflow-hidden h-full transform hover:scale-105 transition duration-300 delay-300 border-4 md:border-6 lg:border-8 cursor-pointer"
+  style={{
+    backgroundColor: colors.black,
+    borderColor: isDarkMode ? colors.black : colors.black, // Dynamic border color
+  }}
+  onClick={() => window.location.href = '/blog'}
+>
+  <div className="h-24 md:h-32 lg:h-40 overflow-hidden">
+    <img
+      src={card.image || "/test.png"}
+      alt={`Blog post about ${card.text}`}
+      className="w-full h-full object-cover rounded-lg md:rounded-xl"
+    />
   </div>
+  <div className="p-2 md:p-3 lg:p-4">
+  <p 
+      className="text-sm md:text-base lg:text-lg font-semibold"
+      style={{ color: colors.headerText }}
+    >
+      {card.text}
+    </p>
+  </div>
+</div>
 ))}
-            </div>
-          </section>
-          {/* === FEATURED BLOGS SECTION - End === */}
+          </div>
+        </section>
+        {/* === FEATURED BLOGS SECTION - End === */}
 
           {/* Featured Posts and Call-to-Action Buttons Section - more responsive */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 px-2 md:px-4">
