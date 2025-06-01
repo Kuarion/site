@@ -3,9 +3,10 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-src/main/resources/application-dev.properties
 node_modules
 bin
+ci_cd_key
+ci_cd_key.pub
 
 ### STS ###
 .apt_generated
@@ -35,9 +36,9 @@ build/
 ### VS Code ###
 .vscode/
 
-
 # Arquivos de configuração local
 src/main/resources/application-local.properties
 src/main/resources/application-dev.properties
+src/main/resources/application-prod.properties
 *.secret.*
 /secrets/
