@@ -1,9 +1,9 @@
 # Kuarion: Conectando o Sol ao Futuro  
 *Plataforma de Democratização da Energia Solar*  
 
-*Projeto desenvolvido no 8º Hackathon Acadêmico - 2025 | Tema: Economia Verde*  
+*Projeto desenvolvido no 8º Hackathon Acadêmico - 2025 - Centro Robótica Paula Souza| Tema: Economia Verde*  
 
-[![License](https://img.shields.io/github/license/Kuarion/site?color=009f45)](LICENSE)  
+[![License: MIT](https://img.shields.io/badge/License-MIT-009f45.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-Protótipo%20Funcional-0077b6)]()  
 
 ## O Sol Está Chamando  
@@ -70,14 +70,14 @@ Nossa solução impacta diretamente os ODS da ONU:
 
 ## Licença e Uso  
 
-Distribuído sob licença MIT. Documentação completa disponível em [docs.kuarion.tech](https://docs.kuarion.tech).  
+Distribuído sob licença MIT.  
 
 ---  
 
 *"Conectamos pessoas ao conhecimento, conhecimento às empresas, e empresas ao futuro."*  
 
 <p align="center">  
-  <img src="https://github.com/Kuarion/site/raw/main/public/kuarion-solar-bridge.png" width="400" alt="Ponte Solar Kuarion">  
+  <img src="https://avatars.githubusercontent.com/u/207100715?v=4" width="400" alt="Ponte Solar Kuarion">  
 </p>  
 
 *Energia solar não é alternativa. É o agora.* ☀️  
